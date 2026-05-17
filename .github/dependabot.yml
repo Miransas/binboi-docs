@@ -1,0 +1,10 @@
+version: 2
+updates:
+  # Next.js / TypeScript SaaS Web Arayüzü İçin
+  - package-ecosystem: "npm"
+    directory: "/web"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+
+  # Go Core Tünel ve Relay Backend İçin
