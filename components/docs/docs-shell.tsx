@@ -9,6 +9,7 @@ import { DocPageHeader } from "@/components/docs/doc-page-header";
 import { cn } from "@/lib/utils";
 import { TableOfContents } from "./docs-toc";
 import { DocsFooter } from "./docs-footer";
+import { Footer } from "../site/site-footer";
 
 export function DocsShell({ children }: { children: React.ReactNode }) {
   const [collapsed, setCollapsed] = useState(false);
@@ -62,7 +63,7 @@ export function DocsShell({ children }: { children: React.ReactNode }) {
         </aside>
       </div>
 
-      <DocsFooter />
+      <Footer/>
     </div>
   );
 }
