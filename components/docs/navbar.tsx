@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { Menu, Search } from "lucide-react";
 import { DocsSearchModal } from "@/components/docs/docs-search-modal";
+import Image from "next/image";
 
 interface NavbarProps {
   onMenuClick?: () => void;
@@ -38,7 +39,7 @@ export function Navbar({ onMenuClick }: NavbarProps) {
             )}
 
             <Link href="/" className="flex items-center gap-2.5">
-              <img src="/logo.png" alt="Binboi" className="w-16" />
+              <Image src="/logo.png" alt="Binboi Logo" width={40} height={40} />
             </Link>
 
             <div className="hidden items-center gap-1.5 sm:flex">

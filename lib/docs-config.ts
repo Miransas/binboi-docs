@@ -2,7 +2,7 @@ import {
   Apple,
   BookOpen,
   Bug,
-  ChevronRight,
+
   Code2,
   Cpu,
   FileText,
