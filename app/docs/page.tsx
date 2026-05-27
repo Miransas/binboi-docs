@@ -187,7 +187,7 @@ export default function DocsHomePage() {
             </div>
 
             <div className="overflow-x-auto px-5 py-5 font-mono text-sm leading-8 text-white/85">
-              <div className="text-white/35">$ npm install -g @binboi/cli</div>
+              <div className="text-white/35">$ npm install -g @miransas/binboi</div>
               <div className="text-white/35">$ binboi login</div>
               <div className="text-white/35">$ binboi http 3000</div>
             </div>

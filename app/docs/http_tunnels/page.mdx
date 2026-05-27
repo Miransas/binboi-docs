@@ -7,13 +7,13 @@ HTTP tunnels are the core feature of Binboi. They forward public HTTPS traffic f
 When you run `binboi http 3000`, the following happens:
 
 1. The CLI authenticates to your Binboi server and opens a persistent, multiplexed connection.
-2. The server assigns a public subdomain (e.g. `abc123.binboi.dev`) and provisions a TLS certificate.
+2. The server assigns a public subdomain (e.g. `abc123.binboi.com`) and provisions a TLS certificate.
 3. Incoming HTTPS requests to that subdomain are accepted at the server edge.
 4. Requests are forwarded over the tunnel connection to `localhost:3000` on your machine.
 5. Responses travel back the same way and are returned to the caller.
 
 ```
-Caller ──HTTPS──▶ abc123.binboi.dev ──tunnel──▶ localhost:3000
+Caller ──HTTPS──▶ abc123.binboi.com ──tunnel──▶ localhost:3000
        ◀──────────────────────────────────────────────────────
 ```
 
@@ -37,7 +37,7 @@ By default, Binboi assigns a random subdomain each session. To get a stable URL,
 
 ```bash
 binboi http 3000 --subdomain myapp
-# Always: https://myapp.binboi.dev
+# Always: https://myapp.binboi.com
 ```
 
 Subdomains are unique per server. If another session holds your requested subdomain, the command will error. Reserve a subdomain permanently in the server dashboard to guarantee ownership.
@@ -47,7 +47,7 @@ Subdomains are unique per server. If another session holds your requested subdom
 Attach your own domain by creating a CNAME DNS record and passing `--hostname`:
 
 ```bash
-# DNS: dev.mycompany.com CNAME tunnel.binboi.dev
+# DNS: dev.mycompany.com CNAME tunnel.binboi.com
 binboi http 3000 --hostname dev.mycompany.com
 ```
 
@@ -69,7 +69,7 @@ Binboi adds the following headers to every forwarded request:
 |---|---|
 | `X-Forwarded-For` | Original client IP |
 | `X-Forwarded-Proto` | `https` |
-| `X-Forwarded-Host` | Public hostname (e.g. `myapp.binboi.dev`) |
+| `X-Forwarded-Host` | Public hostname (e.g. `myapp.binboi.com`) |
 | `X-Binboi-Tunnel-Id` | Unique ID for this tunnel session |
 
 ## Basic Auth

@@ -231,7 +231,7 @@ export const SUPPORT_CHANNELS: SupportChannel[] = [
     title: "Email support",
     description:
       "Use direct email for account questions, billing clarifications, or implementation help that needs context.",
-    href: "mailto:support@binboi.dev",
+    href: "mailto:hello@miransas.com",
     ctaLabel: "Email support",
   },
   {
@@ -339,7 +339,7 @@ export const DOCS_ARTICLES: DocsArticle[] = [
         code: {
           language: "bash",
           snippet:
-            "curl -fsSL https://binboi.example/install.sh | sh\nbinboi login --token <token>\nbinboi tunnel create --name docs-preview --port 3000",
+            "curl -fsSL https://binboi.com/install.sh | sh\nbinboi login --token <token>\nbinboi http 3000",
         },
       },
     ],

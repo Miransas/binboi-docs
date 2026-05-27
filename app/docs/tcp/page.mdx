@@ -12,15 +12,15 @@ Output:
 
 ```
 Tunnel started
-  Public endpoint : tcp://abc123.binboi.dev:12345
-  Forwarding      : tcp://abc123.binboi.dev:12345 → localhost:5432
+  Public endpoint : tcp://abc123.binboi.com:12345
+  Forwarding      : tcp://abc123.binboi.com:12345 → localhost:5432
   Status          : online
 ```
 
 Connect to the tunnel from a remote machine:
 
 ```bash
-psql -h abc123.binboi.dev -p 12345 -U myuser mydb
+psql -h abc123.binboi.com -p 12345 -U myuser mydb
 ```
 
 ## Common Use Cases
@@ -29,7 +29,7 @@ psql -h abc123.binboi.dev -p 12345 -U myuser mydb
 
 ```bash
 binboi tcp 5432 --subdomain mydb
-# Connect: psql -h mydb.binboi.dev -p <assigned_port> -U user db
+# Connect: psql -h mydb.binboi.com -p <assigned_port> -U user db
 ```
 
 ### MySQL / MariaDB
@@ -42,7 +42,7 @@ binboi tcp 3306
 
 ```bash
 binboi tcp 22 --subdomain myssh
-# Connect: ssh -p <assigned_port> user@myssh.binboi.dev
+# Connect: ssh -p <assigned_port> user@myssh.binboi.com
 ```
 
 ### Redis
@@ -58,7 +58,7 @@ By default the Binboi server assigns a random port. Reserve a stable port using 
 
 ```bash
 binboi tcp 5432 --remote-port 15432
-# Always available at tcp://binboi.example.com:15432
+# Always available at tcp://eu-fra-1.binboi.com:15432
 ```
 
 Reserved ports must be configured on the server side within the allowed port range. See [Provider](/docs/provider) for `tcp.port_range` settings.

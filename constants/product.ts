@@ -12,6 +12,6 @@ export const PRODUCT_DESCRIPTION =
 export const PRODUCT_SHORT_DESCRIPTION =
   "Secure tunnels, clean access controls, and usage visibility in one control plane.";
 
-export const PRODUCT_EMAIL = "support@binboi.dev";
+export const PRODUCT_EMAIL = "hello@miransas.com";
 
 export const DEFAULT_APP_URL = "http://localhost:3000";

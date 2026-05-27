@@ -7,7 +7,7 @@ Install and configure Binboi on Linux, including systemd service setup for persi
 **Install script (recommended)**
 
 ```bash
-curl -fsSL https://dl.binboi.dev/install.sh | sh
+curl -fsSL https://binboi.com/install.sh | sh
 ```
 
 The script auto-detects architecture, downloads the binary to `/usr/local/bin/binboi`, and sets execute permissions.
@@ -16,18 +16,18 @@ The script auto-detects architecture, downloads the binary to `/usr/local/bin/bi
 
 ```bash
 # x86_64
-curl -fsSL https://dl.binboi.dev/latest/linux-amd64/binboi \
+curl -fsSL https://github.com/Miransas/binboi/releases/latest/download/binboi-linux-amd64 \
   -o /usr/local/bin/binboi && chmod +x /usr/local/bin/binboi
 
 # arm64
-curl -fsSL https://dl.binboi.dev/latest/linux-arm64/binboi \
+curl -fsSL https://github.com/Miransas/binboi/releases/latest/download/binboi-linux-arm64 \
   -o /usr/local/bin/binboi && chmod +x /usr/local/bin/binboi
 ```
 
 **APT (Debian / Ubuntu)**
 
 ```bash
-echo "deb [trusted=yes] https://apt.binboi.dev stable main" \
+echo "deb [trusted=yes] https://apt.binboi.com stable main" \
   | sudo tee /etc/apt/sources.list.d/binboi.list
 sudo apt update && sudo apt install binboi
 ```
@@ -35,7 +35,7 @@ sudo apt update && sudo apt install binboi
 **RPM (Fedora / RHEL / CentOS)**
 
 ```bash
-sudo rpm -i https://dl.binboi.dev/latest/binboi.rpm
+sudo rpm -i https://github.com/Miransas/binboi/releases/latest/download/binboi.rpm
 ```
 
 ## Verify
@@ -48,9 +48,7 @@ binboi --version
 ## Login
 
 ```bash
-binboi login --server https://binboi.example.com
-# or with a pre-shared token:
-binboi login --token YOUR_AUTH_TOKEN --server https://binboi.example.com
+binboi login --token binboi_pat_xxx_yyy
 ```
 
 ## Running as a systemd Service
@@ -100,7 +98,7 @@ If you cannot write to `/usr/local/bin`, install to `~/.local/bin` instead:
 
 ```bash
 mkdir -p ~/.local/bin
-curl -fsSL https://dl.binboi.dev/latest/linux-amd64/binboi \
+curl -fsSL https://github.com/Miransas/binboi/releases/latest/download/binboi-linux-amd64 \
   -o ~/.local/bin/binboi && chmod +x ~/.local/bin/binboi
 
 # Add to PATH if not already there

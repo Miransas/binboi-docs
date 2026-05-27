@@ -21,7 +21,7 @@ Start your local service, then re-run the `binboi` command.
 The CLI cannot reach the Binboi server.
 
 1. Verify the server address: `binboi config show`
-2. Check outbound connectivity: `curl -I https://binboi.example.com`
+2. Check outbound connectivity: `curl -I https://api.binboi.com`
 3. Ensure port 443 is not blocked by a corporate firewall or VPN
 
 ### `tunnel reconnecting...` (repeated)
@@ -29,7 +29,7 @@ The CLI cannot reach the Binboi server.
 The CLI lost the server connection and is retrying with exponential backoff. This is normal after a network blip. If it persists:
 
 - Check server health: `binboi server status`
-- Check your machine's DNS: `nslookup binboi.example.com`
+- Check your machine's DNS: `nslookup api.binboi.com`
 - Try a different region: `binboi http 3000 --region us-west`
 
 ---
@@ -41,7 +41,7 @@ The CLI lost the server connection and is retrying with exponential backoff. Thi
 Your auth token has expired. Re-authenticate:
 
 ```bash
-binboi login --server https://binboi.example.com
+binboi login --token binboi_pat_xxx_yyy
 ```
 
 ### `auth: invalid token`
@@ -50,7 +50,7 @@ The token in `~/.binboi/config.json` is malformed or was revoked. Log out and ba
 
 ```bash
 binboi logout
-binboi login --server https://binboi.example.com
+binboi login --token binboi_pat_xxx_yyy
 ```
 
 ### `auth: unauthorized`

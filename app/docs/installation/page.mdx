@@ -30,14 +30,14 @@ The recommended install path on macOS. Homebrew manages upgrades and puts
 ## Install
 
 ```bash
-brew tap binboi/tap
+brew tap miransas/tap
 brew install binboi
 ```
 
 Or in a single command:
 
 ```bash
-brew install binboi/tap/binboi
+brew install miransas/tap/binboi
 ```
 
 ## Verify installation
@@ -62,7 +62,7 @@ brew upgrade binboi
 
 ```bash
 brew uninstall binboi
-brew untap binboi/tap   # optional — removes the tap entirely
+brew untap miransas/tap   # optional — removes the tap entirely
 ```
 
 ## First tunnel
@@ -104,7 +104,7 @@ Your app is live at `https://myapp.binboi.com`.
 The tap may not be initialised yet. Run:
 
 ```bash
-brew tap binboi/tap
+brew tap miransas/tap
 brew install binboi
 ```
 
@@ -143,8 +143,9 @@ This runs `binboi version` against the installed binary, which is the same
 check the formula's `test do` block uses.
 
 
+```bash
 # Intel
-curl -fsSL https://dl.binboi.dev/latest/darwin-amd64/binboi -o /usr/local/bin/binboi
+curl -fsSL https://binboi.com/releases/latest/darwin-amd64/binboi -o /usr/local/bin/binboi
 chmod +x /usr/local/bin/binboi
 ```
 
@@ -157,7 +158,7 @@ See the [macOS guide](/docs/mac) for Gatekeeper and PATH notes.
 **Install script (recommended)**
 
 ```bash
-curl -fsSL https://dl.binboi.dev/install.sh | sh
+curl -fsSL https://binboi.com/install.sh | sh
 ```
 
 The script detects your architecture, downloads the correct binary to `/usr/local/bin/binboi`, and sets execute permissions.
@@ -166,20 +167,12 @@ The script detects your architecture, downloads the correct binary to `/usr/loca
 
 ```bash
 # x86_64
-curl -fsSL https://dl.binboi.dev/latest/linux-amd64/binboi -o /usr/local/bin/binboi
+curl -fsSL https://github.com/Miransas/binboi/releases/latest/download/binboi-linux-amd64 -o /usr/local/bin/binboi
 chmod +x /usr/local/bin/binboi
 
 # arm64
-curl -fsSL https://dl.binboi.dev/latest/linux-arm64/binboi -o /usr/local/bin/binboi
+curl -fsSL https://github.com/Miransas/binboi/releases/latest/download/binboi-linux-arm64 -o /usr/local/bin/binboi
 chmod +x /usr/local/bin/binboi
-```
-
-**APT (Debian / Ubuntu)**
-
-```bash
-echo "deb [trusted=yes] https://apt.binboi.dev stable main" \
-  | sudo tee /etc/apt/sources.list.d/binboi.list
-sudo apt update && sudo apt install binboi
 ```
 
 See the [Linux guide](/docs/linux) for systemd service setup.
@@ -212,7 +205,7 @@ Download `binboi-windows-amd64.exe` from the [releases page](https://github.com/
 If you already have Node.js 18+, you can install the CLI wrapper via npm:
 
 ```bash
-npm install -g @binboi/cli
+npm install -g @miransas/binboi
 ```
 
 This downloads the correct platform binary and wires up the `binboi` command automatically.
@@ -237,10 +230,10 @@ binboi --help
 brew upgrade binboi
 
 # npm
-npm update -g @binboi/cli
+npm update -g @miransas/binboi
 
 # Install script (re-run)
-curl -fsSL https://dl.binboi.dev/install.sh | sh
+curl -fsSL https://binboi.com/install.sh | sh
 ```
 
 ---

@@ -1,0 +1,134 @@
+# CLI Reference
+
+The `binboi` command-line tool manages your tunnels and account.
+
+## Global Flags
+
+| Flag         | Description                                                  |
+|--------------|--------------------------------------------------------------|
+| `--server`   | Override the server URL (default `https://api.binboi.com`)   |
+| `--config`   | Path to config file (default `~/.binboi/config.json`)        |
+| `--quiet`    | Reduce output                                                |
+| `--json`     | Output as JSON                                               |
+| `-h, --help` | Show help for any command                                    |
+
+## Commands
+
+### `binboi login`
+
+Authenticate with a Personal Access Token.
+
+```bash
+binboi login --token binboi_pat_xxx_yyy
+```
+
+Generate tokens at [binboi.com/dashboard/access-tokens](https://binboi.com/dashboard/access-tokens).
+
+### `binboi logout`
+
+Remove the saved token from `~/.binboi/config.json`.
+
+```bash
+binboi logout
+```
+
+### `binboi whoami`
+
+Show the currently authenticated account.
+
+```bash
+binboi whoami
+```
+
+### `binboi http`
+
+Open an HTTP/HTTPS tunnel to a local port.
+
+```bash
+binboi http 3000
+binboi http 3000 --subdomain myapp
+binboi http 3000 --region eu-fra
+```
+
+Flags:
+
+| Flag                     | Description                                          |
+|--------------------------|------------------------------------------------------|
+| `--subdomain <name>`     | Reserve a stable subdomain (Pro+)                    |
+| `--region <code>`        | Pick a region (default `eu-fra`)                     |
+| `--hostname <host>`      | Custom domain (Pro+)                                 |
+| `--basic-auth user:pass` | Require HTTP basic auth on the public URL            |
+| `--inspect`              | Open the local inspector at `http://localhost:4040`  |
+
+### `binboi tcp`
+
+Open a raw TCP tunnel for databases, SSH, game servers, and other non-HTTP services.
+
+```bash
+binboi tcp 5432
+```
+
+The CLI prints the assigned `tcp://host:port` endpoint.
+
+### `binboi tunnels`
+
+List your active tunnels.
+
+```bash
+binboi tunnels
+binboi tunnels --json
+```
+
+### `binboi tokens`
+
+Manage Personal Access Tokens from the CLI.
+
+```bash
+binboi tokens list
+binboi tokens revoke <token-id>
+```
+
+### `binboi update`
+
+Check for and install CLI updates.
+
+```bash
+binboi update
+```
+
+### `binboi version`
+
+Print the CLI version.
+
+```bash
+binboi version
+```
+
+## Configuration File
+
+Located at `~/.binboi/config.json`:
+
+```json
+{
+  "server": "https://api.binboi.com",
+  "token": "binboi_pat_xxx...",
+  "default_region": "eu-fra"
+}
+```
+
+You can edit this directly or use `binboi config set <key> <value>`.
+
+## Exit Codes
+
+| Code | Meaning               |
+|------|-----------------------|
+| 0    | Success               |
+| 1    | General error         |
+| 2    | Authentication failed |
+| 3    | Quota exceeded        |
+| 4    | Network error         |
+
+## See Also
+
+- [Authentication](/docs/authentication)
+- [API Reference](/docs/api)

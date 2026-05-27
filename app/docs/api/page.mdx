@@ -1,0 +1,206 @@
+# API Reference
+
+Binboi exposes a REST API at `https://api.binboi.com`. All endpoints accept and return JSON.
+
+## Authentication
+
+Include your PAT or session JWT as a Bearer header:
+
+```http
+Authorization: Bearer binboi_pat_xxx...
+```
+
+Errors follow this shape:
+
+```json
+{
+  "code": "TOKEN_LIMIT_REACHED",
+  "error": "token limit reached for your plan"
+}
+```
+
+## Auth Endpoints
+
+### `POST /api/auth/register`
+
+Create a new account. A verification email is sent from `noreply@miransas.com`.
+
+Request:
+
+```json
+{
+  "name": "Sardor",
+  "email": "sardor@example.com",
+  "password": "min8chars",
+  "confirm_password": "min8chars"
+}
+```
+
+Response `201`:
+
+```json
+{
+  "ok": true,
+  "user_id": "uuid",
+  "email": "sardor@example.com"
+}
+```
+
+### `POST /api/auth/login`
+
+Sign in with email and password.
+
+Request:
+
+```json
+{ "email": "sardor@example.com", "password": "..." }
+```
+
+Response `200`:
+
+```json
+{
+  "token": "eyJhbG...",
+  "user": {
+    "id": "uuid",
+    "email": "sardor@example.com",
+    "name": "Sardor",
+    "plan": "FREE"
+  }
+}
+```
+
+Errors:
+
+- `403 EMAIL_NOT_VERIFIED` — verify your email before signing in
+- `401` — invalid credentials
+
+### `POST /api/auth/verify-email`
+
+Verify an account using the token from the verification email.
+
+Request: `{ "token": "..." }`
+
+Response `200`: `{ "ok": true, "email": "..." }`
+
+### `POST /api/auth/forgot-password`
+
+Send a password reset email. Returns `200` even if the email is unknown (prevents enumeration).
+
+Request: `{ "email": "..." }`
+
+### `POST /api/auth/reset-password`
+
+Set a new password using the token from the reset email.
+
+Request: `{ "token": "...", "new_password": "..." }`
+
+Response `200`: `{ "ok": true }`
+
+## Token Endpoints
+
+### `GET /api/v1/tokens`
+
+List your Personal Access Tokens.
+
+Response `200`:
+
+```json
+{
+  "auth_mode": "account",
+  "user": { "id": "...", "email": "...", "plan": "FREE" },
+  "limits": {
+    "plan": "FREE",
+    "max_tokens": 3,
+    "max_tunnels": 1,
+    "tokens_used": 1,
+    "active_tunnels": null
+  },
+  "tokens": [
+    {
+      "id": "uuid",
+      "name": "CLI token",
+      "prefix": "binboi_pat_a1b2c3d4",
+      "status": "ACTIVE",
+      "createdAt": "2026-05-26T19:48:12Z",
+      "lastUsedAt": null,
+      "revokedAt": null
+    }
+  ]
+}
+```
+
+### `POST /api/v1/tokens`
+
+Create a new PAT.
+
+Request: `{ "name": "CLI token" }`
+
+Response `201`:
+
+```json
+{
+  "token": "binboi_pat_a1b2c3d4_x9y8z7w6...",
+  "record": { "id": "...", "name": "CLI token", "prefix": "binboi_pat_a1b2c3d4" }
+}
+```
+
+The full `token` is returned only once.
+
+Errors:
+
+- `403 TOKEN_LIMIT_REACHED` — upgrade or revoke an existing token
+
+### `DELETE /api/v1/tokens/:id`
+
+Revoke a token. Any active tunnels using it are closed immediately.
+
+Response `204`.
+
+## Tunnel Endpoints
+
+### `GET /api/v1/tunnels`
+
+List your active tunnels.
+
+### `POST /api/v1/tunnels`
+
+Create a tunnel (typically used by the CLI, not directly).
+
+### `DELETE /api/v1/tunnels/:id`
+
+Close a tunnel.
+
+## Account Endpoints
+
+### `GET /api/v1/auth/me`
+
+Return the current authenticated user.
+
+Response `200`:
+
+```json
+{
+  "user": { "id": "...", "email": "...", "name": "...", "plan": "FREE" }
+}
+```
+
+### `PUT /api/v1/auth/me`
+
+Update name or password.
+
+### `DELETE /api/v1/auth/me`
+
+Delete the account.
+
+## Rate Limits
+
+- 60 requests per minute per token for write endpoints
+- 600 requests per minute per token for read endpoints
+
+Responses include `X-RateLimit-Remaining` and `X-RateLimit-Reset` headers.
+
+## See Also
+
+- [Authentication](/docs/authentication)
+- [CLI Reference](/docs/cli)

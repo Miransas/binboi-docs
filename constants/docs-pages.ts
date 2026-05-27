@@ -72,7 +72,7 @@ export const DOCS_PAGES: DocsPageContent[] = [
           {
             language: "bash",
             title: "Typical first-session flow",
-            code: "brew install binboi/tap/binboi\nbinboi login\nbinboi http 3000\ncurl https://your-tunnel.binboi.dev/health",
+            code: "brew install miransas/tap/binboi\nbinboi login\nbinboi http 3000\ncurl https://your-tunnel.binboi.com/health",
           },
         ],
       },
@@ -227,7 +227,7 @@ export const DOCS_PAGES: DocsPageContent[] = [
           {
             language: "bash",
             title: "Install and verify",
-            code: "brew install binboi/tap/binboi\nbinboi version",
+            code: "brew install miransas/tap/binboi\nbinboi version",
           },
         ],
       },
@@ -285,7 +285,7 @@ export const DOCS_PAGES: DocsPageContent[] = [
           {
             language: "bash",
             title: "Smoke test the tunnel",
-            code: "curl https://your-tunnel.binboi.dev/health",
+            code: "curl https://your-tunnel.binboi.com/health",
           },
         ],
       },
@@ -363,7 +363,7 @@ export const DOCS_PAGES: DocsPageContent[] = [
           {
             language: "bash",
             title: "Example manual install flow",
-            code: "curl -fsSL https://downloads.binboi.dev/binboi-darwin-arm64 -o /usr/local/bin/binboi\nchmod +x /usr/local/bin/binboi\nbinboi version",
+            code: "curl -fsSL https://github.com/Miransas/binboi/releases/latest/download/binboi-darwin-arm64 -o /usr/local/bin/binboi\nchmod +x /usr/local/bin/binboi\nbinboi version",
           },
         ],
       },
@@ -832,7 +832,7 @@ export const DOCS_PAGES: DocsPageContent[] = [
           {
             language: "bash",
             title: "Authenticated API request",
-            code: "curl https://api.binboi.dev/v1/endpoints \\\n  -H 'Authorization: Bearer bb_api_xxxxx' \\\n  -H 'Content-Type: application/json'",
+            code: "curl https://api.binboi.com/v1/endpoints \\\n  -H 'Authorization: Bearer bb_api_xxxxx' \\\n  -H 'Content-Type: application/json'",
           },
         ],
       },

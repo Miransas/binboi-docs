@@ -37,7 +37,7 @@ choco install binboi
 **npm**
 
 ```powershell
-npm install -g @binboi/cli
+npm install -g @miransas/binboi
 ```
 
 ## Adding to PATH (Manual Install)
@@ -60,15 +60,7 @@ binboi --version
 ## Login
 
 ```powershell
-binboi login --server https://binboi.example.com
-```
-
-A browser window will open to complete authentication. Your token is stored at `%USERPROFILE%\.binboi\config.json`.
-
-Token-based login:
-
-```powershell
-binboi login --token YOUR_AUTH_TOKEN --server https://binboi.example.com
+binboi login --token binboi_pat_xxx_yyy
 ```
 
 ## Expose a Local Port
@@ -113,7 +105,7 @@ nssm remove BinboiTunnel confirm
 If you use WSL, install the Linux binary inside your WSL distribution:
 
 ```bash
-curl -fsSL https://dl.binboi.dev/install.sh | sh
+curl -fsSL https://binboi.com/install.sh | sh
 ```
 
 Tunnels from WSL can forward to services running inside WSL or on the Windows host via `$(hostname).local` or `172.x.x.x`.

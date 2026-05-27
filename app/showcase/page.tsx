@@ -56,12 +56,12 @@ const useCases: UseCase[] = [
 $ binboi http 3000 --subdomain stripe-hooks
 
   Tunnel started
-  Public URL  https://stripe-hooks.binboi.dev
-  Forwarding  https://stripe-hooks.binboi.dev → localhost:3000
+  Public URL  https://stripe-hooks.binboi.com
+  Forwarding  https://stripe-hooks.binboi.com → localhost:3000
   Status      online
 
 # Register this URL in your Stripe dashboard as the webhook endpoint
-# → https://stripe-hooks.binboi.dev/webhook`,
+# → https://stripe-hooks.binboi.com/webhook`,
       },
       {
         label: "Inspect & replay",
@@ -124,7 +124,7 @@ app.listen(3000);`,
 $ binboi http 3000 --subdomain pr-review-42
 
   Tunnel started
-  Public URL  https://pr-review-42.binboi.dev
+  Public URL  https://pr-review-42.binboi.com
   Status      online
 
 # Share the URL with your team — they can open it in
@@ -164,11 +164,11 @@ console.log(\`Share this URL: \${tunnel.url}\`);`,
 $ binboi http 8080 --subdomain acme-demo --region eu-west
 
   Tunnel started
-  Public URL  https://acme-demo.binboi.dev
+  Public URL  https://acme-demo.binboi.com
   Region      eu-west  (latency: ~18ms)
   Status      online
 
-# Open https://acme-demo.binboi.dev on the projector.
+# Open https://acme-demo.binboi.com on the projector.
 # Every code change you make is visible immediately.`,
       },
     ],
@@ -188,7 +188,7 @@ $ binboi http 8080 --subdomain acme-demo --region eu-west
       {
         label: "Raspberry Pi setup",
         code: `# On the Raspberry Pi (arm64 binary)
-$ curl -fsSL https://dl.binboi.dev/install.sh | sh
+$ curl -fsSL https://binboi.com/install.sh | sh
 $ binboi login --server https://tunnel.example.com
 
 # Expose the Node-RED dashboard on port 1880
@@ -247,11 +247,11 @@ $ psql -h tunnel.example.com -p 15432 -U myuser mydb`,
         code: `# Expose local SSH server
 $ binboi tcp 22 --subdomain my-macbook
 
-  TCP endpoint  my-macbook.binboi.dev:<port>
+  TCP endpoint  my-macbook.binboi.com:<port>
   Status        online
 
 # Connect from any machine
-$ ssh -p <port> user@my-macbook.binboi.dev`,
+$ ssh -p <port> user@my-macbook.binboi.com`,
       },
     ],
   },
@@ -606,7 +606,7 @@ export default function ShowcasePage() {
                   step: "01",
                   title: "Install",
                   desc: "One command — works on macOS, Linux, and Windows.",
-                  code: "npm install -g @binboi/cli",
+                  code: "npm install -g @miransas/binboi",
                 },
                 {
                   step: "02",
@@ -696,7 +696,7 @@ export default function ShowcasePage() {
                   <div className="mt-1 text-white/30">
                     {"  "}Public URL{" "}
                     <span className="text-lime-400">
-                      https://abc123.binboi.dev
+                      https://abc123.binboi.com
                     </span>
                   </div>
                   <div className="mt-0.5 flex items-center gap-1.5 text-white/30">

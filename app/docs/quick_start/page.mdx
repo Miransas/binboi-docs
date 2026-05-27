@@ -4,8 +4,8 @@ Get your first public HTTPS URL in under two minutes.
 
 ## Prerequisites
 
-- Node.js 18+ or a supported package manager (npm, Homebrew, or a binary download)
-- A running Binboi server, or access to a shared one — see [Provider](/docs/provider)
+- A Binboi account — [sign up at binboi.com](https://binboi.com/register)
+- Node.js 18+, Homebrew, or a direct binary download
 
 ---
 
@@ -15,13 +15,13 @@ Choose the method that matches your platform:
 
 ```bash
 # npm (all platforms)
-npm install -g @binboi/cli
+npm install -g @miransas/binboi
 
 # Homebrew (macOS / Linux)
-brew install binboi/tap/binboi
+brew install miransas/tap/binboi
 
-# Direct binary (Linux x64)
-curl -fsSL https://dl.binboi.dev/install.sh | sh
+# Direct binary (Linux / macOS)
+curl -fsSL https://binboi.com/install.sh | sh
 ```
 
 Verify the install:
@@ -35,18 +35,19 @@ binboi --version
 
 ## Step 2 — Log In
 
-Authenticate against your Binboi server. Replace the URL with your own server's address.
+Generate a Personal Access Token at [binboi.com/dashboard/access-tokens](https://binboi.com/dashboard/access-tokens), then authenticate:
 
 ```bash
-binboi login --server https://binboi.example.com
+binboi login --token binboi_pat_xxx_yyy
 ```
 
-A browser window opens and asks you to authorize the CLI. After approval, your auth token is stored at `~/.binboi/config.json` and reused automatically for every subsequent command.
+The token is saved to `~/.binboi/config.json` and reused automatically for every subsequent command.
 
-If your server uses a pre-shared token instead of browser auth:
+Confirm it worked:
 
 ```bash
-binboi login --token YOUR_AUTH_TOKEN --server https://binboi.example.com
+binboi whoami
+# Logged in as you@example.com (FREE plan)
 ```
 
 ---
@@ -63,24 +64,24 @@ You will see output like this:
 
 ```
 Tunnel started
-  Public URL : https://abc123.binboi.dev
-  Forwarding : https://abc123.binboi.dev → http://localhost:3000
+  Public URL : https://abc123.binboi.com
+  Forwarding : https://abc123.binboi.com → http://localhost:3000
   Status     : online
-  Region     : us-east
+  Region     : eu-fra
 
 Press Ctrl+C to stop
 ```
 
-Open `https://abc123.binboi.dev` in any browser or share it with a teammate — requests are forwarded live to your local machine.
+Open `https://abc123.binboi.com` in any browser or share it with a teammate — requests are forwarded live to your local machine.
 
 ---
 
 ## What's Next?
 
-- Keep the tunnel alive with a **reserved subdomain** so the URL never changes between sessions:
+- Keep the tunnel alive with a **reserved subdomain** so the URL never changes between sessions (Pro+):
   ```bash
   binboi http 3000 --subdomain myapp
-  # https://myapp.binboi.dev
+  # https://myapp.binboi.com
   ```
 - Inspect every request in real time at `http://localhost:4040` (the local dashboard).
 - Use `binboi tcp 5432` to expose a database or other TCP service.
