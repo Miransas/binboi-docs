@@ -1,8 +1,20 @@
 version: 2
 updates:
-  # Next.js / TypeScript SaaS Web Arayüzü İçin
+  # Next.js / TypeScript Web Arayüzü İçin
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
+    ignore:
+      - dependency-name: "react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react-dom"
+        update-types: ["version-update:semver-major"]
+
+  # GitHub Actions Workflow Güncellemeleri
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 3
