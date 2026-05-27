@@ -2,6 +2,7 @@
 import type { MDXComponents } from "mdx/types";
 import { cn } from "@/lib/utils";
 import { Pre } from "@/components/docs/pre";
+import { HeadingLink } from "@/components/docs/heading-link";
 
 function slugify(text: string) {
   return text
@@ -24,7 +25,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     h1: ({ className, ...props }: any) => (
       <h1
         className={cn(
-          "mt-2 mb-4 scroll-m-20 text-[2.25rem] font-bold tracking-[-0.02em] leading-tight text-white",
+          "mt-2 mb-4 scroll-m-20 text-[1.875rem] font-bold tracking-[-0.02em] leading-tight text-white md:text-[2.25rem]",
           className
         )}
         {...props}
@@ -34,8 +35,9 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     h2: ({ className, children, id, ...props }: any) => {
       const generatedId = id ?? slugify(extractText(children));
       return (
-        <h2
+        <HeadingLink
           id={generatedId}
+          as="h2"
           className={cn(
             "mt-12 mb-3 scroll-m-20 border-b border-white/[0.08] pb-2.5",
             "text-[1.375rem] font-semibold tracking-[-0.015em] leading-snug text-white first:mt-0",
@@ -44,23 +46,24 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
           {...props}
         >
           {children}
-        </h2>
+        </HeadingLink>
       );
     },
 
     h3: ({ className, children, id, ...props }: any) => {
       const generatedId = id ?? slugify(extractText(children));
       return (
-        <h3
+        <HeadingLink
           id={generatedId}
+          as="h3"
           className={cn(
-            "mt-8 mb-2 scroll-m-20 text-base font-semibold tracking-[-0.01em] leading-snug text-white/95",
+            "mt-8 mb-2 scroll-m-20 text-base font-semibold tracking-[-0.01em] leading-snug text-white",
             className
           )}
           {...props}
         >
           {children}
-        </h3>
+        </HeadingLink>
       );
     },
 
@@ -83,7 +86,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     p: ({ className, ...props }: any) => (
       <p
         className={cn(
-          "text-[0.9375rem] leading-[1.75] text-white/65 [&:not(:first-child)]:mt-5",
+          "text-[0.9375rem] leading-[1.75] text-white/80 [&:not(:first-child)]:mt-5",
           className
         )}
         {...props}
@@ -93,7 +96,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     ul: ({ className, ...props }: any) => (
       <ul
         className={cn(
-          "my-5 ml-5 list-disc space-y-1.5 text-[0.9375rem] leading-[1.75] text-white/65",
+          "my-5 ml-5 list-disc space-y-1.5 text-[0.9375rem] leading-[1.75] text-white/80",
           "[&>li]:pl-1",
           className
         )}
@@ -104,7 +107,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     ol: ({ className, ...props }: any) => (
       <ol
         className={cn(
-          "my-5 ml-5 list-decimal space-y-1.5 text-[0.9375rem] leading-[1.75] text-white/65",
+          "my-5 ml-5 list-decimal space-y-1.5 text-[0.9375rem] leading-[1.75] text-white/80",
           "[&>li]:pl-1",
           className
         )}
@@ -113,7 +116,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     ),
 
     li: ({ className, ...props }: any) => (
-      <li className={cn("text-white/65", className)} {...props} />
+      <li className={cn("text-white/80", className)} {...props} />
     ),
 
     a: ({ className, ...props }: any) => (
@@ -131,7 +134,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       <blockquote
         className={cn(
           "mt-6 border-l-2 border-lime-400/30 pl-5 text-[0.9375rem] leading-[1.75]",
-          "italic text-white/50",
+          "italic text-white/65",
           className
         )}
         {...props}
@@ -185,7 +188,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 
     td: ({ className, ...props }: any) => (
       <td
-        className={cn("px-4 py-3 text-[0.9rem] text-white/60", className)}
+        className={cn("px-4 py-3 text-[0.9rem] text-white/75", className)}
         {...props}
       />
     ),
@@ -195,8 +198,8 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     code: ({ className, ...props }: any) => (
       <code
         className={cn(
-          "relative rounded-md border border-white/[0.08] bg-white/[0.06]",
-          "px-[0.35em] py-[0.15em] font-mono text-[0.85em] text-lime-300",
+          "rounded-[5px] border border-white/[0.06] bg-white/[0.04]",
+          "px-[0.4em] py-[0.1em] font-mono text-[0.875em] font-medium text-lime-300",
           className
         )}
         {...props}

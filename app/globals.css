@@ -1,5 +1,9 @@
 /* Global design tokens and shared baseline styles for the Binboi app. */
 @import "tailwindcss";
+
+html {
+  scroll-behavior: smooth;
+}
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 

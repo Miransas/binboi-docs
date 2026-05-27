@@ -1,7 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { CopyButton } from "./copy-button";
+"use client";
 
-// Language display labels
+import { useState } from "react";
+import { Copy, Check } from "lucide-react";
+import { cn } from "@/lib/utils";
+
 const LANG_LABELS: Record<string, string> = {
   bash: "bash",
   sh: "bash",
@@ -30,40 +32,83 @@ const LANG_LABELS: Record<string, string> = {
   powershell: "ps1",
   ps1: "ps1",
   xml: "xml",
+  ini: "ini",
+  http: "http",
 };
 
-function getLang(className?: string): string | null {
-  if (!className) return null;
+function getLang(className?: string): string {
+  if (!className) return "code";
   const match = className.match(/language-(\w+)/);
-  if (!match) return null;
+  if (!match) return "code";
   return LANG_LABELS[match[1]] ?? match[1];
 }
 
-export function Pre({ children, ...props }: any) {
-  const codeClassName = children?.props?.className as string | undefined;
-  const codeText = children?.props?.children ?? "";
-  const lang = getLang(codeClassName);
+function extractCodeText(node: unknown): string {
+  if (typeof node === "string") return node;
+  if (Array.isArray(node)) return node.map(extractCodeText).join("");
+  if (node && typeof node === "object" && "props" in (node as object)) {
+    const el = node as { props?: { children?: unknown } };
+    return extractCodeText(el.props?.children);
+  }
+  return "";
+}
+
+interface PreProps extends React.HTMLAttributes<HTMLPreElement> {
+  children?: React.ReactNode;
+}
+
+export function Pre({ children, className, ...props }: PreProps) {
+  const [copied, setCopied] = useState(false);
+
+  // children is the <code> element rendered by rehype-pretty-code
+  const codeEl = children as React.ReactElement<{ className?: string; children?: React.ReactNode }> | null;
+  const lang = getLang(codeEl?.props?.className);
+  const codeText = extractCodeText(codeEl?.props?.children).trimEnd();
+
+  async function handleCopy() {
+    try {
+      await navigator.clipboard.writeText(codeText);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch {
+      // clipboard unavailable
+    }
+  }
 
   return (
-    <div className="group relative my-6">
-      {/* Top bar — only rendered when there's a language label */}
-      {lang && (
-        <div className="flex items-center justify-between rounded-t-xl border border-b-0 border-white/[0.08] bg-white/[0.03] px-4 py-2">
-          <span className="font-mono text-[0.7rem] font-medium uppercase tracking-widest text-white/30">
-            {lang}
-          </span>
-        </div>
-      )}
+    <div className="my-6 overflow-hidden rounded-xl border border-white/[0.08] bg-[#0a0a0a]">
+      {/* Header bar */}
+      <div className="flex items-center justify-between border-b border-white/[0.06] bg-white/[0.02] px-3 py-2 md:px-4">
+        <span className="font-mono text-[0.7rem] font-medium uppercase tracking-widest text-white/40">
+          {lang}
+        </span>
 
-      {/* Copy button */}
-      <CopyButton text={String(codeText)} />
+        <button
+          type="button"
+          onClick={handleCopy}
+          aria-label={copied ? "Copied" : "Copy code"}
+          className="inline-flex items-center gap-1.5 text-[0.7rem] text-white/40 transition-colors hover:text-white/80"
+        >
+          {copied ? (
+            <>
+              <Check className="h-3.5 w-3.5 text-lime-400" strokeWidth={2.5} />
+              <span className="text-lime-400">Copied</span>
+            </>
+          ) : (
+            <>
+              <Copy className="h-3.5 w-3.5" />
+              <span>Copy</span>
+            </>
+          )}
+        </button>
+      </div>
 
+      {/* Code area */}
       <pre
-        className={`
-          overflow-x-auto border border-white/[0.08] bg-[#0a0a0a]
-          p-5 font-mono text-[0.8125rem] leading-[1.8] text-white/80
-          ${lang ? "rounded-b-xl rounded-tr-xl" : "rounded-xl"}
-        `}
+        className={cn(
+          "overflow-x-auto p-4 font-mono text-[0.875rem] leading-[1.7] text-white/85",
+          className
+        )}
         {...props}
       >
         {children}

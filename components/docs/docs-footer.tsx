@@ -16,145 +16,126 @@ function XIcon({ className }: { className?: string }) {
   );
 }
 
-function DiscordIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>
-      <path d="M20.317 4.369A19.791 19.791 0 0015.558 3c-.207.375-.45.88-.617 1.275a18.27 18.27 0 00-5.882 0A12.64 12.64 0 008.442 3a19.736 19.736 0 00-4.76 1.369C.533 9.046-.32 13.58.106 18.057A19.9 19.9 0 006 21a14.32 14.32 0 001.273-2.05 12.93 12.93 0 01-2.004-.97c.168-.123.332-.252.49-.387 3.863 1.808 8.054 1.808 11.872 0 .16.135.324.264.492.387a12.88 12.88 0 01-2.006.971A14.19 14.19 0 0018.39 21a19.86 19.86 0 005.895-2.943c.5-5.187-.838-9.68-3.968-13.688zM8.02 15.331c-1.154 0-2.101-1.055-2.101-2.35 0-1.296.928-2.351 2.1-2.351 1.183 0 2.12 1.064 2.101 2.35 0 1.296-.928 2.351-2.1 2.351zm7.96 0c-1.154 0-2.101-1.055-2.101-2.35 0-1.296.928-2.351 2.1-2.351 1.183 0 2.12 1.064 2.101 2.35 0 1.296-.928 2.351-2.1 2.351z" />
-    </svg>
-  );
-}
-
-const productLinks = [
-  { label: "Introduction", href: "/docs/introduction" },
-  { label: "Quick Start", href: "/docs/quick_start" },
-  { label: "Installation", href: "/docs/installation" },
-  { label: "HTTP Tunnels", href: "/docs/http_tunnels" },
+const columns = [
+  {
+    title: "Product",
+    links: [
+      { label: "Binboi", href: "https://binboi.com", external: true },
+      { label: "Vertox", href: "https://vertox.com", external: true, badge: "Coming soon" },
+      { label: "Rabilt", href: "https://rabilt.com", external: true, badge: "Coming soon" },
+    ],
+  },
+  {
+    title: "Docs",
+    links: [
+      { label: "Quick Start", href: "/docs/quick_start" },
+      { label: "CLI Reference", href: "/docs/cli" },
+      { label: "API Reference", href: "/docs/api" },
+      { label: "Changelog", href: "/changelog" },
+    ],
+  },
+  {
+    title: "Company",
+    links: [
+      { label: "Miransas", href: "https://miransas.com", external: true },
+      { label: "Support", href: "/support" },
+      { label: "Terms", href: "/terms" },
+      { label: "Contact", href: "mailto:hello@miransas.com", external: true },
+    ],
+  },
 ];
-
-const resourcesLinks = [
-  { label: "Documentation", href: "/docs/introduction" },
-  { label: "CLI Reference", href: "/docs/cli" },
-  { label: "Troubleshooting", href: "/docs/troubleshooting" },
-  { label: "Changelog", href: "/changelog" },
-];
-
-const companyLinks = [
-  { label: "About", href: "/about" },
-  { label: "Blog", href: "/blog" },
-  { label: "Contact", href: "/contact" },
-  { label: "GitHub", href: "https://github.com/Miransas/binboi", external: true },
-];
-
-const legalLinks = [
-  { label: "Privacy Policy", href: "/privacy" },
-  { label: "Terms", href: "/terms" },
-  { label: "License", href: "/license" },
-];
-
-function FooterColumn({
-  title,
-  links,
-}: {
-  title: string;
-  links: { label: string; href: string; external?: boolean }[];
-}) {
-  return (
-    <div className="space-y-4">
-      {/* <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[200px] bg-white/5 blur-3xl opacity-20" />
-      </div> */}
-      <p className="text-sm font-medium text-white/35">{title}</p>
-      <ul className="space-y-3">
-        {links.map((link) => (
-          <li key={link.href}>
-            {link.external ? (
-              <a
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[15px] text-white/80 transition-colors hover:text-white"
-              >
-                {link.label}
-              </a>
-            ) : (
-              <Link
-                href={link.href}
-                className="text-[15px] text-white/80 transition-colors hover:text-white"
-              >
-                {link.label}
-              </Link>
-            )}
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
 
 export function DocsFooter() {
   return (
-    <footer className="mt-28 border-t border-white/[0.06] bg-black">
-        <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[200px] bg-white/5 blur-3xl opacity-20" />
-      </div>
-      <div className="mx-auto max-w-[1600px] px-4 py-16 md:px-6 md:py-20">
-        <div className="grid gap-14 lg:grid-cols-[1.2fr_0.8fr_0.8fr_0.8fr_0.8fr] lg:gap-16">
-          <div className="space-y-5">
+    <footer className="mt-20 border-t border-white/[0.06] bg-black">
+      <div className="mx-auto max-w-[1600px] px-4 py-14 md:px-6 md:py-16">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
+          {/* Brand */}
+          <div className="space-y-4">
             <Link href="/" className="inline-flex items-center gap-2">
-              <span className="text-xl font-semibold tracking-tight text-white">
-                binboi
-              </span>
-              <span className="rounded border border-white/[0.08] px-2 py-0.5 text-[11px] font-medium uppercase tracking-[0.18em] text-white/35">
+              <span className="text-lg font-semibold tracking-tight text-white">binboi</span>
+              <span className="rounded border border-white/[0.08] px-2 py-0.5 text-[10px] font-medium uppercase tracking-[0.18em] text-white/35">
                 docs
               </span>
             </Link>
-
-            <p className="max-w-xs text-sm leading-7 text-white/50">
-              Self-hosted tunnels for developers. Expose local services to the
-              internet with automatic HTTPS and clean request debugging.
+            <p className="max-w-xs text-sm leading-7 text-white/75">
+              Expose local services to the internet with automatic HTTPS, request inspection, and webhook replay.
+            </p>
+            <p className="text-md text-white/25">
+              A{" "}
+              <a
+                href="https://miransas.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#FEFDE8] text-lg font-bold hover:text-white/70 transition-colors"
+              >
+                Miransas
+              </a>{" "}
+              product.
             </p>
           </div>
 
-          <FooterColumn title="Product" links={productLinks} />
-          <FooterColumn title="Resources" links={resourcesLinks} />
-          <FooterColumn title="Company" links={companyLinks} />
-          <FooterColumn title="Legal" links={legalLinks} />
+          {/* Link columns */}
+          {columns.map((col) => (
+            <div key={col.title} className="space-y-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/95">
+                {col.title}
+              </p>
+              <ul className="space-y-2.5">
+                {col.links.map((link) => (
+                  <li key={link.href} className="flex items-center gap-2">
+                    {link.external ? (
+                      <a
+                        href={link.href}
+                        target={link.href.startsWith("mailto") ? undefined : "_blank"}
+                        rel={link.href.startsWith("mailto") ? undefined : "noopener noreferrer"}
+                        className="text-md text-white/90 transition-colors hover:text-white"
+                      >
+                        {link.label}
+                      </a>
+                    ) : (
+                      <Link
+                        href={link.href}
+                        className="text-md text-white/90 transition-colors hover:text-white"
+                      >
+                        {link.label}
+                      </Link>
+                    )}
+                    {"badge" in link && link.badge && (
+                      <span className="rounded border border-white/[0.06] px-1.5 py-0.5 text-[10px] text-green-500">
+                        {link.badge}
+                      </span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
 
-        <div className="mt-14 flex flex-col gap-5 border-t border-white/[0.06] pt-6 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-xs uppercase tracking-[0.2em] text-white/30">
+        <div className="mt-12 flex flex-col gap-4 border-t border-white/[0.06] pt-6 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-lg text-[#FEFDE8] ">
             © {new Date().getFullYear()} Miransas. All rights reserved.
           </p>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1">
             <a
               href="https://x.com/miransas"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Miransas on X"
-              className="flex h-9 w-9 items-center justify-center rounded-lg text-white/40 transition-colors hover:text-white"
+              className="flex h-8 w-8 items-center justify-center rounded-lg text-white/40 transition-colors hover:text-white/80"
             >
-              <XIcon className="h-4.5 w-4.5" />
+              <XIcon className="h-4 w-4" />
             </a>
-
             <a
               href="https://github.com/Miransas/binboi"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Binboi on GitHub"
-              className="flex h-9 w-9 items-center justify-center rounded-lg text-white/40 transition-colors hover:text-white"
+              className="flex h-8 w-8 items-center justify-center rounded-lg text-white/40 transition-colors hover:text-white/80"
             >
-              <GithubIcon className="h-4.5 w-4.5" />
-            </a>
-
-            <a
-              href="https://discord.gg/your-link"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Binboi on Discord"
-              className="flex h-9 w-9 items-center justify-center rounded-lg text-white/40 transition-colors hover:text-white"
-            >
-              <DiscordIcon className="h-4.5 w-4.5" />
+              <GithubIcon className="h-4 w-4" />
             </a>
           </div>
         </div>

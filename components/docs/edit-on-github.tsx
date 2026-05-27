@@ -1,27 +1,22 @@
-// components/docs/edit-on-github.tsx
 "use client";
 
 import { usePathname } from "next/navigation";
-import { FaGithub } from "react-icons/fa";
+import { Pencil } from "lucide-react";
 
-
-
-export const EditOnGithub = () => {
+export function EditOnGithub() {
   const pathname = usePathname();
-  const repoUrl = "https://github.com/miransas/binboi-docs/edit/main/app"; // Repo yoluna göre ayarla
-  
-  // Örnek: /docs/installation -> app/docs/installation/page.mdx
-  const editUrl = `${repoUrl}${pathname}/page.mdx`;
+  const repoBase = "https://github.com/Miransas/binboi-docs/edit/main/app";
+  const editUrl = `${repoBase}${pathname}/page.mdx`;
 
   return (
     <a
       href={editUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex items-center gap-2 text-[11px] font-medium text-white/30 hover:text-white transition-colors group"
+      className="inline-flex items-center gap-2 text-sm text-white/40 transition-colors hover:text-lime-400"
     >
-      <FaGithub className="group-hover:text-red-500 transition-colors" />
+      <Pencil className="h-3.5 w-3.5" />
       <span>Edit this page on GitHub</span>
     </a>
   );
-};
+}

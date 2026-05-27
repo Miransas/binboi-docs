@@ -1,10 +1,9 @@
-/* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
+import { Pencil, GitBranch } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { FaDiscord, FaGithub } from "react-icons/fa";
 
 type Heading = {
   id: string;
@@ -22,11 +21,7 @@ export function TableOfContents() {
 
   const editUrl = useMemo(() => {
     let docPath = pathname.replace(/^\/docs/, "");
-
-    if (!docPath || docPath === "/") {
-      docPath = "/introduction";
-    }
-
+    if (!docPath || docPath === "/") docPath = "/introduction";
     return `${GITHUB_EDIT_BASE}${docPath}/page.mdx`;
   }, [pathname]);
 
@@ -39,66 +34,55 @@ export function TableOfContents() {
       .filter((el) => el.id && el.innerText.trim().length > 0)
       .map((el) => ({
         id: el.id,
-        text: el.innerText,
+        text: el.innerText.trim(),
         level: el.tagName === "H2" ? 2 : 3,
       }));
 
     setHeadings(items);
-
-    if (items.length > 0 && !activeId) {
-      setActiveId(items[0].id);
-    }
+    if (items.length > 0) setActiveId(items[0].id);
 
     const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries
-          .filter((entry) => entry.isIntersecting)
+          .filter((e) => e.isIntersecting)
           .sort(
             (a, b) =>
               (a.target as HTMLElement).offsetTop -
               (b.target as HTMLElement).offsetTop
           );
-
         if (visible.length > 0) {
           setActiveId((visible[0].target as HTMLElement).id);
         }
       },
-      {
-        rootMargin: "0px 0px -70% 0px",
-        threshold: 0.1,
-      }
+      { rootMargin: "0px 0px -70% 0px", threshold: 0.1 }
     );
 
     elements.forEach((el) => observer.observe(el));
-
     return () => observer.disconnect();
-  }, [pathname, activeId]);
+  }, [pathname]);
 
   return (
     <div className="space-y-6">
       {headings.length > 0 && (
         <div>
-          <p className="mb-4 text-md font-semibold uppercase tracking-[0.22em] text-stone-300">
+          <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/35">
             On this page
           </p>
 
-          <nav className="relative">
-            <div className="absolute left-0 top-0 h-full w-px bg-white/8" />
-
-            <ul className="space-y-1">
+          <nav>
+            <ul className="space-y-0.5">
               {headings.map((heading) => {
                 const isActive = activeId === heading.id;
-
                 return (
                   <li key={heading.id}>
                     <a
                       href={`#${heading.id}`}
                       className={cn(
-                        "relative block border-l pl-4 text-sm transition-colors",
-                        heading.level === 3 && "pl-7 text-white/40",
+                        "block border-l-2 py-1 text-[0.8125rem] transition-colors",
+                        heading.level === 3 ? "pl-5" : "pl-3",
                         isActive
-                          ? "border-red-500 text-white"
-                          : "border-transparent text-white/45 hover:text-white/70"
+                          ? "border-lime-400 text-white"
+                          : "border-transparent text-white/40 hover:border-white/20 hover:text-white/70"
                       )}
                     >
                       {heading.text}
@@ -111,25 +95,27 @@ export function TableOfContents() {
         </div>
       )}
 
-      <div className="h-px bg-white/8" />
+      <div className="h-px bg-white/[0.06]" />
 
-      <div className="space-y-3 text-sm">
+      <div className="space-y-3">
         <a
           href={editUrl}
           target="_blank"
           rel="noreferrer"
-          className="block text-white/80 text-md transition-colors hover:text-emerland-500 flex gap-1 items-center"
+          className="inline-flex items-center gap-2 text-[0.8rem] text-white/40 transition-colors hover:text-lime-400"
         >
-         <FaGithub  size={19}/> Edit this page on GitHub
+          <Pencil className="h-3.5 w-3.5" />
+          Edit this page on GitHub
         </a>
 
         <a
-          href="https://discord.gg/"
+          href="https://github.com/Miransas/binboi"
           target="_blank"
           rel="noreferrer"
-          className="block text-white/80 text-md gap-1  transition-colors hover:text-white/70 flex items-center"
+          className="inline-flex items-center gap-2 text-[0.8rem] text-white/40 transition-colors hover:text-white/70"
         >
-         <FaDiscord size={20} color="blue" className=""/> Chat with us on Discord
+          <GitBranch className="h-3.5 w-3.5" />
+          GitHub
         </a>
       </div>
     </div>

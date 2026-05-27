@@ -2,32 +2,54 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Search } from "lucide-react";
+import { Menu, Search } from "lucide-react";
 import { DocsSearchModal } from "@/components/docs/docs-search-modal";
 
-export function Navbar() {
+interface NavbarProps {
+  onMenuClick?: () => void;
+}
+
+const centerNav = [
+  { label: "Docs", href: "/docs" },
+  { label: "Pricing", href: "/pricing" },
+  { label: "Changelog", href: "/changelog" },
+];
+
+export function Navbar({ onMenuClick }: NavbarProps) {
   const [searchOpen, setSearchOpen] = useState(false);
 
   return (
     <>
-      <header className="sticky top-0 z-50 h-14 border-b border-white/[0.06] bg-black/90 backdrop-blur-md">
+      <header className="sticky top-0 z-50 h-14 border-b border-white/[0.06] bg-black/60 backdrop-blur-lg">
         <div className="mx-auto flex h-full max-w-[1600px] items-center justify-between px-4 md:px-6">
 
-          {/* Left — brand */}
-          <div className="flex items-center gap-6">
-            <Link href="https://binboi.com" className="flex items-center gap-2.5">
-              {/* Wordmark */}
-              <img src="/logo.png" alt="" className="w-16" />
+          {/* Left — hamburger (mobile) + brand */}
+          <div className="flex items-center gap-3">
+            {/* Mobile hamburger */}
+            {onMenuClick && (
+              <button
+                type="button"
+                onClick={onMenuClick}
+                aria-label="Open navigation"
+                className="flex h-8 w-8 items-center justify-center rounded-lg text-white/55 transition-colors hover:bg-white/[0.06] hover:text-white md:hidden"
+              >
+                <Menu className="h-5 w-5" />
+              </button>
+            )}
 
+            <Link href="/" className="flex items-center gap-2.5">
+              <img src="/logo.png" alt="Binboi" className="w-16" />
             </Link>
-            <div>
+
+            <div className="hidden items-center gap-1.5 sm:flex">
               <span className="font-semibold tracking-tight text-white">
                 binboi
               </span>
-              <span className="hidden rounded-md border border-white/[0.1] bg-white/[0.04] px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wider text-white/40 sm:inline">
+              <span className="rounded-md border border-white/[0.1] bg-white/[0.04] px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wider text-white/40">
                 docs
               </span>
             </div>
+
             {/* Divider */}
             <span className="hidden h-4 w-px bg-white/[0.1] md:block" aria-hidden="true" />
 
@@ -45,29 +67,32 @@ export function Navbar() {
                 </span>
               </span>
             </a>
-
-            {/* Nav links */}
-            <nav className="hidden items-center gap-5 md:flex">
-              <Link
-                href="/showcase"
-                className="text-sm text-white/50 transition-colors hover:text-white/85"
-              >
-                Showcase
-              </Link>
-              <a
-                href="https://github.com/Miransas/binboi"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-white/35 transition-colors hover:text-white/70"
-              >
-                GitHub
-              </a>
-            </nav>
           </div>
+
+          {/* Center — nav links (desktop) */}
+          <nav className="hidden items-center gap-1 md:flex">
+            {centerNav.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="rounded-lg px-3 py-1.5 text-sm text-white/50 transition-colors hover:bg-white/[0.04] hover:text-white/85"
+              >
+                {item.label}
+              </Link>
+            ))}
+            <a
+              href="https://github.com/Miransas/binboi"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-lg px-3 py-1.5 text-sm text-white/35 transition-colors hover:bg-white/[0.04] hover:text-white/70"
+            >
+              GitHub
+            </a>
+          </nav>
 
           {/* Right — search + actions */}
           <div className="flex items-center gap-2">
-            {/* Search button — desktop */}
+            {/* Search — desktop */}
             <button
               type="button"
               onClick={() => setSearchOpen(true)}
@@ -80,7 +105,7 @@ export function Navbar() {
               </kbd>
             </button>
 
-            {/* Search icon — mobile */}
+            {/* Search — mobile */}
             <button
               type="button"
               onClick={() => setSearchOpen(true)}
@@ -90,9 +115,18 @@ export function Navbar() {
               <Search className="h-4 w-4" />
             </button>
 
+            {/* Sign in — desktop */}
+            <Link
+              href="https://binboi.com/login"
+              className="hidden h-8 items-center rounded-lg px-3 text-sm text-white/55 transition-colors hover:text-white/85 md:inline-flex"
+            >
+              Sign in
+            </Link>
+
+            {/* Dashboard */}
             <Link
               href="https://binboi.com/dashboard"
-              className="inline-flex h-8 items-center rounded-lg border border-white/[0.1] bg-white/[0.04] px-3 text-sm text-white/75 transition-colors hover:bg-white/[0.08] hover:text-white"
+              className="inline-flex h-8 items-center rounded-lg bg-lime-400 px-3 text-sm font-medium text-black transition-opacity hover:opacity-90"
             >
               Dashboard
             </Link>
