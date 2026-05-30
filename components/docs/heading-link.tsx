@@ -56,7 +56,7 @@ export function HeadingLink({
           aria-label="Copy heading link"
           className={cn(
             "inline-flex h-7 w-7 items-center justify-center rounded-md border border-white/8 bg-white/[0.02] text-white/25 opacity-0 transition-all duration-200",
-            "hover:border-white/12 hover:bg-white/[0.05] hover:text-white",
+            "hover:border-white/12 hover:bg-white/[0.05] hover:text-lime-400",
             "group-hover:opacity-100 group-focus-within:opacity-100",
             copied && "border-emerald-500/20 bg-emerald-500/10 text-emerald-300 opacity-100"
           )}

@@ -78,7 +78,7 @@ export function Pre({ children, className, ...props }: PreProps) {
   return (
     <div className="my-6 overflow-hidden rounded-xl border border-white/[0.08] bg-[#0a0a0a]">
       {/* Header bar */}
-      <div className="flex items-center justify-between border-b border-white/[0.06] bg-white/[0.02] px-3 py-2 md:px-4">
+      <div className="flex items-center justify-between border-b border-white/[0.06] bg-white/[0.02] px-3 py-2.5 md:px-4">
         <span className="font-mono text-[0.7rem] font-medium uppercase tracking-widest text-white/40">
           {lang}
         </span>

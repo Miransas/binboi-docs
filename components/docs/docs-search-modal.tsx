@@ -119,7 +119,7 @@ export function DocsSearchModal({
         showCloseButton={false}
         className="overflow-hidden p-0"
       >
-        <div className="border-b border-white/8">
+        <div className="border-b border-white/[0.08]">
           <div className="flex items-center gap-3 px-4 py-3">
             <Search className="h-4 w-4 shrink-0 text-white/35" />
             <input
@@ -150,7 +150,7 @@ export function DocsSearchModal({
                     className={cn(
                       "flex w-full items-start gap-3 rounded-xl px-3 py-3 text-left transition-colors",
                       active
-                        ? "bg-white/[0.06]"
+                        ? "bg-white/[0.06] ring-1 ring-lime-400/10"
                         : "hover:bg-white/[0.04]"
                     )}
                   >
@@ -190,12 +190,22 @@ export function DocsSearchModal({
           )}
         </div>
 
-        <div className="flex items-center justify-between border-t border-white/8 px-4 py-3 text-[11px] text-white/28">
+        <div className="flex items-center justify-between border-t border-white/[0.08] px-4 py-3 text-[11px] text-white/40">
           <div className="flex items-center gap-3">
-            <span>↑↓ navigate</span>
-            <span>Enter open</span>
+            <span className="flex items-center gap-1">
+              <kbd className="rounded border border-white/[0.1] bg-white/[0.04] px-1 py-0.5 font-mono text-[10px]">↑↓</kbd>
+              navigate
+            </span>
+            <span className="flex items-center gap-1">
+              <kbd className="rounded border border-white/[0.1] bg-white/[0.04] px-1 py-0.5 font-mono text-[10px]">↵</kbd>
+              open
+            </span>
+            <span className="flex items-center gap-1">
+              <kbd className="rounded border border-white/[0.1] bg-white/[0.04] px-1 py-0.5 font-mono text-[10px]">esc</kbd>
+              close
+            </span>
           </div>
-          <span>Binboi Docs Search</span>
+          <kbd className="rounded border border-white/[0.1] bg-white/[0.04] px-1.5 py-0.5 font-mono text-[10px]">⌘K</kbd>
         </div>
       </DialogContent>
     </Dialog>

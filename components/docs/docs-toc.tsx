@@ -82,8 +82,8 @@ export function TableOfContents() {
                         "block border-l-2 py-1 text-[0.8125rem] transition-colors",
                         heading.level === 3 ? "pl-5" : "pl-3",
                         isActive
-                          ? "border-lime-400 text-white"
-                          : "border-transparent text-white/40 hover:border-white/20 hover:text-white/70"
+                          ? "border-lime-400 text-lime-400"
+                          : "border-transparent text-white/50 hover:border-white/20 hover:text-white/80"
                       )}
                     >
                       {heading.text}
