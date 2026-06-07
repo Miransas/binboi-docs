@@ -17,7 +17,8 @@ import {
   Search,
 } from "lucide-react";
 import { Navbar } from "@/components/docs/navbar";
-import { DocsFooter } from "@/components/docs/docs-footer";
+import Footer from "../../components/docs/docs-footer";
+
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -713,7 +714,7 @@ export default function ShowcasePage() {
         </section>
       </main>
 
-      <DocsFooter />
+      <Footer />
     </div>
   );
 }

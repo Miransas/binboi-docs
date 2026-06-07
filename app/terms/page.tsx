@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/docs/navbar";
-import { DocsFooter } from "@/components/docs/docs-footer";
+import Footer from "../../components/docs/docs-footer";
+
 
 export default function TermsPage() {
   return (
@@ -104,7 +105,7 @@ export default function TermsPage() {
         </div>
       </main>
 
-      <DocsFooter />
+      <Footer />
     </div>
   );
 }

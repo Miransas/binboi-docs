@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/docs/navbar";
-import { DocsFooter } from "@/components/docs/docs-footer";
+import Footer from "../../components/docs/docs-footer";
+
 
 const entries = [
   {
@@ -54,7 +55,7 @@ export default function ChangelogPage() {
         </div>
       </main>
 
-      <DocsFooter />
+      <Footer />
     </div>
   );
 }

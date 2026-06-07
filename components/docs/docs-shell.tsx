@@ -9,8 +9,9 @@ import { DocsPagination } from "@/components/docs/docs-pagination";
 import { DocPageHeader } from "@/components/docs/doc-page-header";
 import { EditOnGithub } from "@/components/docs/edit-on-github";
 import { TableOfContents } from "./docs-toc";
-import { DocsFooter } from "./docs-footer";
+
 import { cn } from "@/lib/utils";
+import Footer from "./docs-footer";
 
 export function DocsShell({ children }: { children: React.ReactNode }) {
   const [collapsed, setCollapsed] = useState(false);
@@ -130,7 +131,7 @@ export function DocsShell({ children }: { children: React.ReactNode }) {
         </aside>
       </div>
 
-      <DocsFooter />
+      <Footer />
     </div>
   );
 }

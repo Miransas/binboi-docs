@@ -64,7 +64,7 @@ export function Sidebar({ collapsed, setCollapsed, isMobile, onLinkClick }: Side
                 <div key={section.title}>
                   {!collapsed ? (
                     // Başlık opaklığı 30'dan 50'ye çıkarıldı
-                    <h4 className="mb-2 px-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-white/50 transition-opacity duration-300">
+                    <h4 className="mb-2 px-2 text-sm font-semibold uppercase tracking-[0.22em] text-white/50 transition-opacity duration-300">
                       {section.title}
                     </h4>
                   ) : (

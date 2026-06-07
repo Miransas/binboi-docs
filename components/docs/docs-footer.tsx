@@ -1,28 +1,27 @@
-import Link from "next/link";
+/* eslint-disable @next/next/no-img-element */
+import Link from 'next/link';
+import React from 'react';
+import { FaDiscord, FaGithub, FaTwitter } from 'react-icons/fa';
 
-function GithubIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>
-      <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
-    </svg>
-  );
-}
+type FooterLink = {
+  label: string;
+  href: string;
+  external?: boolean;
+  badge?: string;
+};
 
-function XIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>
-      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-    </svg>
-  );
-}
+type FooterColumn = {
+  title: string;
+  links: FooterLink[];
+};
 
-const columns = [
+const columns: FooterColumn[] = [
   {
     title: "Product",
     links: [
       { label: "Binboi", href: "https://binboi.com", external: true },
-      { label: "Vertox", href: "https://vertox.com", external: true, badge: "Coming soon" },
-      { label: "Rabilt", href: "https://rabilt.com", external: true, badge: "Coming soon" },
+      { label: "Vertox", href: "/", external: true, badge: "Coming soon" },
+      { label: "Courerx", href: "/", external: true, badge: "Coming soon" },
     ],
   },
   {
@@ -32,112 +31,110 @@ const columns = [
       { label: "CLI Reference", href: "/docs/cli" },
       { label: "API Reference", href: "/docs/api" },
       { label: "Changelog", href: "/changelog" },
+      { label: "Blog", href: "https://blog.miransas.com", external: true },
+      { label: "Changelog", href: "/changelog" },
+      
     ],
   },
   {
     title: "Company",
     links: [
       { label: "Miransas", href: "https://miransas.com", external: true },
-      { label: "Support", href: "/support" },
-      { label: "Terms", href: "/terms" },
-      { label: "Contact", href: "mailto:hello@miransas.com", external: true },
+      { label: "Support", href: "https://miransas.com/support", external: true },
+      { label: "Terms", href: "https://miransas.com/terms", external: true },
+      { label: "Contact", href: "mailto:contact@miransas.com", external: true },
     ],
   },
 ];
 
-export function DocsFooter() {
+export default function Footer() {
   return (
-    <footer className="mt-20 border-t border-white/[0.06] bg-black">
-      <div className="mx-auto max-w-[1600px] px-4 py-14 md:px-6 md:py-16">
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
-          {/* Brand */}
-          <div className="space-y-4">
-            <Link href="/" className="inline-flex items-center gap-2">
-              <span className="text-lg font-semibold tracking-tight text-white">binboi</span>
-              <span className="rounded border border-white/[0.08] px-2 py-0.5 text-[10px] font-medium uppercase tracking-[0.18em] text-white/35">
-                docs
-              </span>
+    <footer className="bg-gradient-to-br from-black via-black to-purple-700 pt-16 pb-8 px-4 md:px-8">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid min-[1200px]:grid-cols-3 gap-12 xl:gap-16">
+
+          {/* Sol Bölüm: Logo ve Sosyal Medya */}
+          <div className="min-[1200px]:max-w-sm max-w-lg w-full">
+            <Link href="https://miransas.com" target="_blank" rel="noopener noreferrer"
+              className="min-h-12 inline-block focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded">
+              <img src="/miransas.png" alt="logo" className="w-12" />
             </Link>
-            <p className="max-w-xs text-sm leading-7 text-white/75">
-              Expose local services to the internet with automatic HTTPS, request inspection, and webhook replay.
-            </p>
-            <p className="text-md text-white/25">
-              A{" "}
-              <a
-                href="https://miransas.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[#FEFDE8] text-lg font-bold hover:text-white/70 transition-colors"
-              >
-                Miransas
-              </a>{" "}
-              product.
-            </p>
+
+            <ul className="flex flex-wrap gap-6 mt-6">
+              <li>
+                <Link href="https://discord.com/invite/miransas" target="_blank" rel="noopener noreferrer"
+                  className="flex items-center bg-neutral-900 w-8 h-8 p-2 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                  aria-label="Discord">
+                  <FaDiscord />
+                </Link>
+              </li>
+              <li>
+                <Link href="https://miransas.com" target="_blank" rel="noopener noreferrer"
+                  className="flex items-center bg-neutral-900 w-8 h-8 p-2 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                  aria-label="LinkedIn">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="size-full fill-slate-50" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M23.994 24v-.001H24v-8.802c0-4.306-.927-7.623-5.961-7.623-2.42 0-4.044 1.328-4.707 2.587h-.07V7.976H8.489v16.023h4.97v-7.934c0-2.089.396-4.109 2.983-4.109 2.549 0 2.587 2.384 2.587 4.243V24zM.396 7.977h4.976V24H.396zM2.882 0C1.291 0 0 1.291 0 2.882s1.291 2.909 2.882 2.909 2.882-1.318 2.882-2.909A2.884 2.884 0 0 0 2.882 0" />
+                  </svg>
+                </Link>
+              </li>
+              <li>
+                <Link href="https://twitter.com/miransaas" target="_blank" rel="noopener noreferrer"
+                  className="flex items-center bg-neutral-900 w-8 h-8 p-2 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                  aria-label="X">
+                  <FaTwitter />
+                </Link>
+              </li>
+              <li>
+                <Link href="https://github.com/miransas"
+                  className="flex items-center bg-neutral-900 w-8 h-8 p-2 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                  aria-label="Github">
+                  <FaGithub />
+                </Link>
+              </li>
+            </ul>
           </div>
 
-          {/* Link columns */}
-          {columns.map((col) => (
-            <div key={col.title} className="space-y-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/95">
-                {col.title}
-              </p>
-              <ul className="space-y-2.5">
-                {col.links.map((link) => (
-                  <li key={link.href} className="flex items-center gap-2">
-                    {link.external ? (
+          {/* Dinamik Dizi İle Render Edilen Kolonlar */}
+          <div className="min-[1200px]:col-span-2 grid grid-cols-2 lg:grid-cols-3 gap-y-12 gap-x-6 sm:gap-x-8">
+            {columns.map((column, columnIndex) => (
+              <div key={columnIndex} className="space-y-6">
+                <h3 className="text-slate-50 text-sm font-semibold">{column.title}</h3>
+                <ul className="space-y-4 text-sm text-slate-400 font-normal">
+                  {column.links.map((link, linkIndex) => (
+                    <li key={linkIndex}>
                       <a
                         href={link.href}
-                        target={link.href.startsWith("mailto") ? undefined : "_blank"}
-                        rel={link.href.startsWith("mailto") ? undefined : "noopener noreferrer"}
-                        className="text-md text-white/90 transition-colors hover:text-white"
+                        target={link.external ? "_blank" : undefined}
+                        rel={link.external ? "noopener noreferrer" : undefined}
+                        className="hover:text-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded transition-all inline-flex items-center gap-2"
                       >
                         {link.label}
+                        {/* Eğer nesnede badge varsa ekrana bas */}
+                        {link.badge && (
+                          <span className="text-[10px] bg-purple-600 text-white px-1.5 py-0.5 rounded font-medium whitespace-nowrap">
+                            {link.badge}
+                          </span>
+                        )}
                       </a>
-                    ) : (
-                      <Link
-                        href={link.href}
-                        className="text-md text-white/90 transition-colors hover:text-white"
-                      >
-                        {link.label}
-                      </Link>
-                    )}
-                    {"badge" in link && link.badge && (
-                      <span className="rounded border border-white/[0.06] px-1.5 py-0.5 text-[10px] text-green-500">
-                        {link.badge}
-                      </span>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+
         </div>
 
-        <div className="mt-12 flex flex-col gap-4 border-t border-white/[0.06] pt-6 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-lg text-[#FEFDE8] ">
-            © {new Date().getFullYear()} Miransas. All rights reserved.
-          </p>
+        <hr className="my-8 border-neutral-700" />
 
-          <div className="flex items-center gap-1">
-            <a
-              href="https://x.com/miransas"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Miransas on X"
-              className="flex h-8 w-8 items-center justify-center rounded-lg text-white/40 transition-colors hover:text-white/80"
-            >
-              <XIcon className="h-4 w-4" />
-            </a>
-            <a
-              href="https://github.com/Miransas/binboi"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Binboi on GitHub"
-              className="flex h-8 w-8 items-center justify-center rounded-lg text-white/40 transition-colors hover:text-white/80"
-            >
-              <GithubIcon className="h-4 w-4" />
-            </a>
-          </div>
+        <div className="flex flex-wrap gap-4 flex-col md:flex-row">
+          {/* <ul className="flex flex-wrap gap-4 text-sm text-slate-400 font-normal">
+            <li><a href="#" className="hover:text-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded transition-all">Terms of Service</a></li>
+            <li><a href="#" className="hover:text-slate-50 transition-all">Privacy Policy</a></li>
+            <li><a href="#" className="hover:text-slate-50 transition-all">Security</a></li>
+          </ul> */}
+
+          <p className="text-slate-200 text-md font-bold md:ml-auto">© 2025-{new Date().getFullYear()} Miransas. All rights reserved..</p>
         </div>
       </div>
     </footer>

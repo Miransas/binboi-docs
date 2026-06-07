@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Navbar } from "@/components/docs/navbar";
-import { DocsFooter } from "@/components/docs/docs-footer";
+import Footer from "../../components/docs/docs-footer";
+
 
 const plans = [
   {
@@ -153,7 +154,7 @@ export default function PricingPage() {
         </p>
       </main>
 
-      <DocsFooter />
+      <Footer />
     </div>
   );
 }
