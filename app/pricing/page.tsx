@@ -3,7 +3,19 @@ import { Navbar } from "@/components/docs/navbar";
 import Footer from "../../components/docs/docs-footer";
 
 
-const plans = [
+type Plan = {
+  name: string;
+  price: string;
+  period: string;
+  description: string;
+  cta: string;
+  ctaHref: string;
+  ctaVariant: "secondary" | "primary";
+  features: string[];
+  badge?: string;
+};
+
+const plans: Plan[] = [
   {
     name: "Free",
     price: "$0",
@@ -11,7 +23,7 @@ const plans = [
     description: "For trying Binboi out.",
     cta: "Start free",
     ctaHref: "https://binboi.com/register",
-    ctaVariant: "secondary" as const,
+    ctaVariant: "secondary",
     features: [
       "1 active tunnel",
       "1 personal access token (lifetime)",
