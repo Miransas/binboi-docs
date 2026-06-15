@@ -1,49 +1,33 @@
 # Introduction
 
-Binboi is a tunneling tool that exposes your local services to the internet via secure public URLs. Think of it as your own private ngrok — fast, TLS-encrypted, and under your control.
+Binboi is a tunneling service that exposes a local port to the public internet over HTTPS. You run a binary on your machine, Binboi gives you a `https://<subdomain>.binboi.com` URL, and traffic to that URL is forwarded to your local process.
 
-## What is Binboi?
+## What you can do with it
 
-When you run a web server locally on `localhost:3000`, only your machine can reach it. Binboi creates an encrypted tunnel from a public URL on the internet to your local port, so teammates, external APIs, and webhook providers can all reach your service instantly — no firewall changes, no static IP, no deployment required.
+- Share a local web app with teammates or clients before you deploy it.
+- Receive webhooks from Stripe, GitHub, Slack, or any other provider on your laptop.
+- Test mobile apps against a local backend without changing networks.
+- Demo work-in-progress without standing up a server.
 
-Binboi is designed for developers who want:
+## Key features
 
-- **HTTPS by default** — every tunnel gets a valid TLS certificate automatically
-- **Team access** — share stable subdomains with your team during development
-- **Webhook debugging** — inspect and replay incoming HTTP requests in real time
-- **TCP tunnels** — forward databases, SSH, and any non-HTTP service
+- HTTPS by default on every tunnel — TLS terminates at the Binboi edge.
+- Authentication via Personal Access Tokens (PATs) — no passwords in the CLI.
+- Tunnel state and traffic visible at [binboi.com/dashboard](https://binboi.com/dashboard).
+- REST API at [api.binboi.com](https://api.binboi.com) for programmatic control.
 
-## How It Works
+## Plans
 
-```
-Your Machine                 Binboi Server              Public Internet
-─────────────               ─────────────────          ─────────────────
-localhost:3000  ──tunnel──▶  api.binboi.com      ◀────  https://abc.binboi.com
-```
+| Plan | Tunnels | PATs | Requests / day | Custom domains | Price |
+|---|---|---|---|---|---|
+| Free | 1 active | 1 (lifetime) | 100 | 0 | $0 |
+| Pro | 10 | 25 | 10,000 | 10 | $10 / mo |
+| Max | 50 | 100 | Unlimited | 50 | $19 / mo |
 
-1. The Binboi CLI opens a persistent, encrypted connection to the Binboi control plane.
-2. The server assigns a public subdomain (e.g. `abc.binboi.com`) to that connection.
-3. Incoming HTTPS requests are forwarded through the tunnel to your local port.
-4. Responses travel back through the same tunnel to the caller.
+Billing is handled through [Polar.sh](https://polar.sh). Cancel anytime from [/dashboard/billing](https://binboi.com/dashboard/billing).
 
-The tunnel uses a multiplexed TCP connection under the hood, so there is no polling — latency is near real-time.
+## Next steps
 
-## Key Features
-
-- **HTTP & HTTPS tunnels** — expose any HTTP service with automatic TLS termination
-- **TCP tunnels** — forward raw TCP traffic for databases, SSH, game servers, and more
-- **Request inspector** — view headers, bodies, and response codes for every request
-- **Webhook replayer** — re-send any captured request without triggering the original source
-- **Custom subdomains** — use reserved names like `myapp.binboi.com` across sessions (Pro+)
-- **Multiple regions** — route traffic through the region closest to your users
-- **CLI + SDKs** — first-class support for JavaScript, Python, and Rust
-
-## Self-Hosted vs. Managed
-
-Binboi is offered as a managed service at [binboi.com](https://binboi.com). The control plane runs in our Frankfurt region, and your tunnel traffic stays end-to-end TLS encrypted. Self-hosting (running your own control plane) is on the roadmap — see the [self-hosting guide](/docs/provider).
-
-## Next Steps
-
-- [Quick Start](/docs/quick_start) — expose your first local port in under two minutes
-- [Installation](/docs/installation) — install the CLI on your platform
-- [Authentication](/docs/authentication) — log in and manage your access tokens
+- [Quick start](/docs/quick_start) — open your first tunnel in four steps.
+- [Installation](/docs/installation) — build the CLI from source.
+- [Authentication](/docs/authentication) — create and use a PAT.

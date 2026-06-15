@@ -8,55 +8,45 @@ const plans = [
     name: "Free",
     price: "$0",
     period: "/month",
-    description: "For individual developers.",
+    description: "For trying Binboi out.",
     cta: "Start free",
     ctaHref: "https://binboi.com/register",
     ctaVariant: "secondary" as const,
     features: [
-      "3 personal access tokens",
-      "1 concurrent tunnel",
-      "HTTP & TCP tunnels",
-      "24h request retention",
-      "24h log retention",
-      "Frankfurt region",
-      "Community support",
+      "1 active tunnel",
+      "1 personal access token (lifetime)",
+      "100 requests / day",
+      "HTTPS by default",
     ],
   },
   {
     name: "Pro",
-    price: "$19",
+    price: "$10",
     period: "/month",
-    description: "For teams and power users.",
+    description: "For solo developers shipping real work.",
     cta: "Upgrade to Pro",
     ctaHref: "https://binboi.com/dashboard/billing",
     ctaVariant: "primary" as const,
-    badge: "Coming soon",
     features: [
+      "10 active tunnels",
       "25 personal access tokens",
-      "10 concurrent tunnels",
-      "Reserved subdomains",
-      "Custom hostnames",
-      "7d request retention",
-      "7d log retention",
-      "Email support",
+      "10,000 requests / day",
+      "10 custom domains",
     ],
   },
   {
-    name: "Scale",
-    price: "Custom",
-    period: "",
-    description: "For organizations with advanced needs.",
-    cta: "Contact us",
-    ctaHref: "mailto:hello@miransas.com",
+    name: "Max",
+    price: "$19",
+    period: "/month",
+    description: "For heavier workloads and teams.",
+    cta: "Upgrade to Max",
+    ctaHref: "https://binboi.com/dashboard/billing",
     ctaVariant: "secondary" as const,
     features: [
-      "Unlimited tokens & tunnels",
-      "30d retention",
-      "Private regions",
-      "SSO",
-      "Custom SLA",
-      "Priority support",
-      "Dedicated infrastructure",
+      "50 active tunnels",
+      "100 personal access tokens",
+      "Unlimited requests",
+      "50 custom domains",
     ],
   },
 ];
@@ -75,7 +65,7 @@ export default function PricingPage() {
             Simple pricing
           </h1>
           <p className="mx-auto max-w-md text-base text-white/55">
-            Start free. Upgrade when you need more tokens, tunnels, or retention.
+            Start free. Upgrade when you need more tunnels, tokens, or requests.
           </p>
         </div>
 
@@ -143,12 +133,12 @@ export default function PricingPage() {
         </div>
 
         <p className="mt-10 text-center text-sm text-white/35">
-          All plans include end-to-end TLS encryption and access to{" "}
+          Paid plans billed via Polar.sh. Cancel anytime from{" "}
           <Link
-            href="/docs"
+            href="https://binboi.com/dashboard/billing"
             className="text-white/55 underline underline-offset-2 hover:text-white/80"
           >
-            documentation
+            /dashboard/billing
           </Link>
           .
         </p>

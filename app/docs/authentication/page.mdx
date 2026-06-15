@@ -1,71 +1,61 @@
 # Authentication
 
-Binboi uses two credential types: account sessions (browser/dashboard) and Personal Access Tokens (PATs) for the CLI and API.
+Binboi authenticates CLI and API requests with a Personal Access Token (PAT). The dashboard uses a separate browser session — PATs are only used outside the dashboard.
 
-## Sign In to the Dashboard
-
-Visit [binboi.com/login](https://binboi.com/login) and enter your email and password. A session cookie (`binboi_token`) is set on your browser for 7 days.
-
-New users must verify their email before signing in. The verification link is sent from `noreply@miransas.com`.
-
-## Personal Access Tokens
-
-For CLI and programmatic access, generate a PAT from the dashboard:
-
-1. Sign in to [binboi.com](https://binboi.com)
-2. Open [Access Tokens](https://binboi.com/dashboard/access-tokens)
-3. Click **Generate Token**, give it a name, and copy the value
-
-A token looks like:
+## Token format
 
 ```
-binboi_pat_a1b2c3d4_x9y8z7w6v5u4t3s2r1q0p9o8n7m6l5k4
+binboi_pat_<8 hex>_<32 hex>
 ```
 
-The full token is shown only once. Store it in a password manager.
+A token is exactly 56 characters. The prefix `binboi_pat_` makes tokens easy to scan for in logs and CI secrets.
 
-## Log In with the CLI
+## Create a token
+
+1. Sign in at [binboi.com](https://binboi.com).
+2. Go to [/dashboard/access-tokens](https://binboi.com/dashboard/access-tokens).
+3. Click **Create token**, give it a label, and confirm.
+4. Copy the token from the modal. It is shown once. Use the **Copy** button to grab it — there is no way to view the value again.
+
+If you lose a token, revoke it and issue a new one.
+
+## Token quotas
+
+PATs count against your plan's lifetime token budget — not just active tokens. Revoked tokens still count.
+
+| Plan | Lifetime PATs |
+|---|---|
+| Free | 1 |
+| Pro | 25 |
+| Max | 100 |
+
+## Use a token
+
+### CLI
 
 ```bash
-binboi login --token binboi_pat_a1b2c3d4_x9y8z7w6...
+binboi login --token binboi_pat_xxxxxxxx_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
-The token is saved to `~/.binboi/config.json` and used for every subsequent command.
+The token is written to `~/.binboi/config.json` and used by every subsequent CLI command.
 
-## Verify Your Session
+### HTTP API
+
+Pass the token in the `Authorization` header on every request to `api.binboi.com`:
+
+```http
+Authorization: Bearer binboi_pat_xxxxxxxx_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+Example:
 
 ```bash
-binboi whoami
+curl https://api.binboi.com/v1/tunnels \
+  -H "Authorization: Bearer $BINBOI_AUTH_TOKEN"
 ```
 
-Output:
+## Revoke a token
 
-```
-Logged in as sardor@example.com (FREE plan)
-Server: https://api.binboi.com
-```
+Open [/dashboard/access-tokens](https://binboi.com/dashboard/access-tokens), find the token, and click **Revoke**. Revocation is immediate — any CLI or API client using that token will start receiving `401` responses.
 
-## Plan Limits
-
-| Plan  | Max tokens | Max concurrent tunnels |
-|-------|------------|------------------------|
-| Free  | 3          | 1                      |
-| Pro   | 25         | 10                     |
-| Scale | Unlimited  | Unlimited              |
-
-When you hit the token limit, the API returns `403 TOKEN_LIMIT_REACHED`. Revoke an old token or upgrade to continue.
-
-## Revoke a Token
-
-From the dashboard, click the token row and select **Revoke**. The token is invalidated immediately and any active tunnels using it are closed.
-
-## Security
-
-- Tokens are hashed with argon2id at rest — only the public prefix (`binboi_pat_xxxx`) is stored in plain text
-- Tokens do not expire automatically — revoke them when you stop using them
-- Each request is logged with the token prefix for audit purposes
-
-## See Also
-
-- [CLI Reference](/docs/cli)
-- [API Reference](/docs/api)
+A revoked token cannot be reactivated, and its slot stays consumed against your lifetime token quota.

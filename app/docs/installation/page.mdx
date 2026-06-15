@@ -1,244 +1,42 @@
 # Installation
 
-Install the Binboi CLI on your machine. The CLI is a single static binary with no runtime dependencies.
+The Binboi CLI is currently distributed as source. Prebuilt packages for Homebrew, a curl installer, and Windows are on the roadmap.
 
-## System Requirements
+## Requirements
 
-| Requirement | Minimum |
-|---|---|
-| OS | macOS 12+, Linux (glibc 2.17+), Windows 10+ |
-| Architecture | x86_64, arm64 |
-| Disk | ~15 MB |
+- Git
+- Go (matching the version in the repo's `go.mod`)
+- `make`
 
----
-
-# Install Binboi via Homebrew
-
-The recommended install path on macOS. Homebrew manages upgrades and puts
-`binboi` on your `PATH` automatically.
-
-## Prerequisites
-
-- macOS (Apple Silicon or Intel)
-- [Homebrew](https://brew.sh) installed
+## Build from source
 
 ```bash
-# Install Homebrew if you don't have it
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/homebrew/install/HEAD/install.sh)"
+git clone https://github.com/Miransas/binboi.git
+cd binboi
+make build-cli
+sudo mv dist/binboi /usr/local/bin/
 ```
 
-## Install
-
-```bash
-brew tap miransas/tap
-brew install binboi
-```
-
-Or in a single command:
-
-```bash
-brew install miransas/tap/binboi
-```
-
-## Verify installation
-
-```bash
-binboi version
-```
-
-Expected output:
-
-```
-0.4.0
-```
-
-## Upgrade
-
-```bash
-brew upgrade binboi
-```
-
-## Uninstall
-
-```bash
-brew uninstall binboi
-brew untap miransas/tap   # optional — removes the tap entirely
-```
-
-## First tunnel
-
-**1. Log in with your access token**
-
-Create a token at [binboi.com/dashboard](https://binboi.com/dashboard/), then:
-
-```bash
-binboi login --token <your-token>
-```
-
-Output:
-
-```
-Authenticated as Sardor Azimov <sardor@example.com>
-Plan: FREE
-Token: bb_... (flag)
-Server: binboi.com:8081
-Saved to /Users/you/.binboi/config.json
-```
-
-**2. Expose a local port**
-
-```bash
-# Expose localhost:3000 with a random subdomain
-binboi http 3000
-
-# Expose localhost:5173 with a custom subdomain
-binboi http 5173 myapp
-```
-
-Your app is live at `https://myapp.binboi.com`.
-
-## Troubleshooting
-
-**`Error: No formulae found in taps`**
-
-The tap may not be initialised yet. Run:
-
-```bash
-brew tap miransas/tap
-brew install binboi
-```
-
-**`brew upgrade binboi` does nothing**
-
-You are already on the latest version. Check with:
-
-```bash
-binboi version
-brew info binboi
-```
-
-**`binboi: command not found` after install**
-
-Homebrew's prefix may not be on your `PATH`. For Apple Silicon Macs:
-
-```bash
-echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
-eval "$(/opt/homebrew/bin/brew shellenv)"
-```
-
-For Intel Macs:
-
-```bash
-echo 'eval "$(/usr/local/bin/brew shellenv)"' >> ~/.zprofile
-eval "$(/usr/local/bin/brew shellenv)"
-```
-
-**Verify the formula locally**
-
-```bash
-brew test binboi
-```
-
-This runs `binboi version` against the installed binary, which is the same
-check the formula's `test do` block uses.
-
-
-```bash
-# Intel
-curl -fsSL https://binboi.com/releases/latest/darwin-amd64/binboi -o /usr/local/bin/binboi
-chmod +x /usr/local/bin/binboi
-```
-
-See the [macOS guide](/docs/mac) for Gatekeeper and PATH notes.
-
----
-
-## Linux
-
-**Install script (recommended)**
-
-```bash
-curl -fsSL https://binboi.com/install.sh | sh
-```
-
-The script detects your architecture, downloads the correct binary to `/usr/local/bin/binboi`, and sets execute permissions.
-
-**Manual download**
-
-```bash
-# x86_64
-curl -fsSL https://github.com/Miransas/binboi/releases/latest/download/binboi-linux-amd64 -o /usr/local/bin/binboi
-chmod +x /usr/local/bin/binboi
-
-# arm64
-curl -fsSL https://github.com/Miransas/binboi/releases/latest/download/binboi-linux-arm64 -o /usr/local/bin/binboi
-chmod +x /usr/local/bin/binboi
-```
-
-See the [Linux guide](/docs/linux) for systemd service setup.
-
----
-
-## Windows
-
-**WinGet**
-
-```powershell
-winget install Binboi.CLI
-```
-
-**Scoop**
-
-```powershell
-scoop bucket add binboi https://github.com/binboi/scoop-bucket
-scoop install binboi
-```
-
-**Manual installer**
-
-Download `binboi-windows-amd64.exe` from the [releases page](https://github.com/binboi/binboi/releases), rename it to `binboi.exe`, and place it somewhere on your `PATH` (e.g. `C:\Program Files\Binboi\`).
-
----
-
-## npm (all platforms)
-
-If you already have Node.js 18+, you can install the CLI wrapper via npm:
-
-```bash
-npm install -g @miransas/binboi
-```
-
-This downloads the correct platform binary and wires up the `binboi` command automatically.
-
----
-
-## Verify the Installation
+## Verify
 
 ```bash
 binboi --version
-# binboi 1.0.0
-
-binboi --help
 ```
 
----
+If the command is not found, confirm that `/usr/local/bin` is on your `PATH`.
 
-## Upgrading
+## Upgrade
+
+Pull the latest source and rebuild:
 
 ```bash
-# Homebrew
-brew upgrade binboi
-
-# npm
-npm update -g @miransas/binboi
-
-# Install script (re-run)
-curl -fsSL https://binboi.com/install.sh | sh
+cd binboi
+git pull
+make build-cli
+sudo mv dist/binboi /usr/local/bin/
 ```
 
----
+## Next
 
-## Next Steps
-
-- [Quick Start](/docs/quick_start) — open your first tunnel
-- [Authentication](/docs/authentication) — log in to your Binboi server
+- [Authentication](/docs/authentication) — generate and configure a PAT.
+- [Quick start](/docs/quick_start) — open your first tunnel.
