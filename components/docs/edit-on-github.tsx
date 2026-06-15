@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { Pencil } from "lucide-react";
+import { FaGithub } from "react-icons/fa";
 
 export function EditOnGithub() {
   const pathname = usePathname();
@@ -17,6 +18,7 @@ export function EditOnGithub() {
     >
       <Pencil className="h-3.5 w-3.5" />
       <span>Edit this page on GitHub</span>
+      {/* <FaGithub/> */}
     </a>
   );
 }

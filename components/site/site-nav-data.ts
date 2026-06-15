@@ -1,19 +1,16 @@
 import {
-  Activity,
   ArrowUpRight,
   BookOpen,
   Bot,
   Cable,
   CloudCog,
+  HardDrive,
   KeyRound,
   LifeBuoy,
-  MapPinned,
   PanelsTopLeft,
-  Radar,
   Route,
   ShieldCheck,
   TerminalSquare,
-  Webhook,
 } from "lucide-react";
 
 export const navLinks = [
@@ -25,7 +22,7 @@ export const navLinks = [
 
 export const workflowItems = [
   { href: "/docs/quick_start", label: "Local previews", icon: PanelsTopLeft },
-  { href: "/docs/webhooks", label: "Webhook debugging", icon: Webhook },
+  { href: "/docs/installation", label: "CLI installation", icon: HardDrive },
   { href: "/docs/http_tunnels", label: "Shared staging tunnels", icon: Cable },
   { href: "/docs/api", label: "Control plane automation", icon: CloudCog },
 ];
@@ -43,18 +40,10 @@ export const toolsMenu = {
       category: "Traffic",
       items: [
         { href: "/docs/http_tunnels", label: "HTTP tunnels", icon: Route },
-        { href: "/docs/requests", label: "Request inspector", icon: Activity },
       ],
     },
   ],
   operations: [
-    {
-      category: "Operate",
-      items: [
-        { href: "/docs/logs", label: "Relay logs", icon: Radar },
-        { href: "/docs/regions", label: "Regions and latency", icon: MapPinned },
-      ],
-    },
     {
       category: "Learn",
       items: [
@@ -74,21 +63,19 @@ export const footerLinks = {
   ],
   Platform: [
     { name: "Quick Start", href: "/docs/quick_start" },
+    { name: "Installation", href: "/docs/installation" },
     { name: "HTTP Tunnels", href: "/docs/http_tunnels" },
-    { name: "Requests", href: "/docs/requests" },
     { name: "API", href: "/docs/api" },
   ],
   Workflows: [
-    { name: "Webhooks", href: "/docs/webhooks" },
-    { name: "Logs", href: "/docs/logs" },
-    { name: "Regions", href: "/docs/regions" },
+    { name: "Authentication", href: "/docs/authentication" },
+    { name: "CLI", href: "/docs/cli" },
     { name: "Troubleshooting", href: "/docs/troubleshooting" },
   ],
   Company: [
     { name: "Register", href: "/register" },
     { name: "Login", href: "/login" },
     { name: "Terms", href: "/terms" },
-    { name: "Status", href: "/docs/bugs" },
   ],
 };
 

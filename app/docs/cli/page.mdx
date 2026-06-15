@@ -1,69 +1,171 @@
 # CLI Reference
 
-The `binboi` binary is the primary way to open tunnels and inspect your account from the terminal.
+Every command the `binboi` binary accepts. All commands except `login` and `version` require a cached token. Run `login` once and the token is written to `~/.binboi/config.json`.
 
 ## Commands
 
-### `binboi login --token <PAT>`
+### `login`
 
-Saves a PAT to `~/.binboi/config.json`. All other commands read it from there.
+Authenticate the CLI and cache the token.
 
 ```bash
-binboi login --token binboi_pat_xxxxxxxx_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+binboi login --token <token>
 ```
 
-### `binboi whoami`
+Flags:
 
-Prints the account email and current plan for the saved PAT.
+| Flag | Purpose |
+|---|---|
+| `--token <token>` | Personal access token in the form `binboi_pat_<8 hex>_<32 hex>`. |
+| `--server <host:port>` | Override the relay address. Defaults to `binboi.com:8081`. |
+
+Example:
+
+```bash
+binboi login --token binboi_pat_a1b2c3d4_0123456789abcdef0123456789abcdef
+```
+
+Output:
+
+```
+Logged in as you@example.com (plan: FREE)
+Token saved to ~/.binboi/config.json
+```
+
+### `logout`
+
+Clear the cached token from the config file.
+
+```bash
+binboi logout
+```
+
+### `whoami`
+
+Print the account associated with the cached token.
 
 ```bash
 binboi whoami
 ```
 
-### `binboi http <port> <subdomain>`
+Output:
 
-Opens an HTTP tunnel from `https://<subdomain>.binboi.com` to `http://localhost:<port>`.
-
-```bash
-binboi http 3000 my-app
-# → https://my-app.binboi.com
+```
+you@example.com — plan FREE — 1/2 active tokens
 ```
 
-The subdomain must be available and within your plan's tunnel quota. Press `Ctrl+C` to close the tunnel.
+### `http`
 
-### `binboi tunnels`
+Open an HTTP tunnel from a local port to `https://<subdomain>.binboi.com`.
 
-Lists your active tunnels with their subdomain, target port, and status.
+```bash
+binboi http <port> [subdomain]
+```
+
+`<port>` is the local TCP port. `[subdomain]` is optional — Free accounts get a random subdomain per session; Pro and Max can pass a reserved one.
+
+Example:
+
+```bash
+binboi http 3000
+```
+
+Output:
+
+```
+Forwarding  https://wispy-otter-7421.binboi.com → http://localhost:3000
+Press Ctrl+C to stop.
+```
+
+### `start`
+
+Alias for `http`. Same arguments.
+
+```bash
+binboi start 3000 my-app
+```
+
+### `tunnels`
+
+List active tunnels on your account.
 
 ```bash
 binboi tunnels
 ```
 
-### `binboi --help`
+Output:
 
-Shows the full command list and flags. Each subcommand also accepts `--help`.
+```
+SUBDOMAIN              PORT   STARTED
+wispy-otter-7421       3000   2m ago
+my-app                 8080   1h ago
+```
+
+### `open`
+
+Open a tunnel URL in your default browser.
 
 ```bash
-binboi --help
-binboi http --help
+binboi open [subdomain]
+```
+
+If `[subdomain]` is omitted, the most recently started tunnel is opened.
+
+### `requests`
+
+Print recent requests captured for a tunnel.
+
+```bash
+binboi requests [subdomain]
+```
+
+Output:
+
+```
+METHOD  PATH         STATUS  DURATION  TIME
+GET     /health      200     12ms      14:02:11
+POST    /api/login   401     43ms      14:02:09
+```
+
+For full request bodies and headers, see [binboi.com/dashboard/requests](https://binboi.com/dashboard/requests).
+
+### `version`
+
+Print the CLI version.
+
+```bash
+binboi version
 ```
 
 ## Environment variables
 
-| Variable | Purpose | Default |
+| Variable | Purpose | When to use |
 |---|---|---|
-| `BINBOI_API_URL` | Control plane base URL | `https://api.binboi.com` |
-| `BINBOI_AUTH_TOKEN` | PAT used instead of the saved config | — |
-| `BINBOI_SERVER_ADDR` | Tunnel server address | production default |
+| `BINBOI_API_URL` | Override the API base URL. Defaults to `https://api.binboi.com`. | Pointing the CLI at a staging API or a self-run mirror. |
+| `BINBOI_SERVER_ADDR` | Override the relay address. Defaults to `binboi.com:8081`. | Same as `--server` flag, but for non-interactive shells. |
+| `BINBOI_AUTH_TOKEN` | Inject the token without running `login`. | CI jobs, containers, ephemeral environments where writing to `~/.binboi/config.json` is undesirable. |
 
-Setting `BINBOI_AUTH_TOKEN` is useful in CI — you can skip `binboi login` and pass the token through the environment.
+Environment variables take precedence over values in the config file.
 
 ## Configuration file
 
-After `binboi login`, the CLI writes:
+The CLI persists state in `~/.binboi/config.json`. It is written on `login` and read by every other command.
 
-```
-~/.binboi/config.json
+Saved fields:
+
+| Field | Source |
+|---|---|
+| `token` | The value passed to `--token` on `login`. |
+| `server` | The value passed to `--server`, if any. Otherwise unset. |
+
+To reset, run `binboi logout` or delete the file:
+
+```bash
+rm ~/.binboi/config.json
 ```
 
-It stores the active PAT and any cached account info. Delete the file to fully sign out.
+## Next
+
+- [HTTP tunnels](/docs/http_tunnels) — how routing, retention, and quotas work.
+- [API reference](/docs/api) — REST endpoints behind the CLI.
+- [Troubleshooting](/docs/troubleshooting) — common errors and fixes.

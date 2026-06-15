@@ -1,42 +1,71 @@
 # Installation
 
-The Binboi CLI is currently distributed as source. Prebuilt packages for Homebrew, a curl installer, and Windows are on the roadmap.
+Binboi CLI distribution is in progress. Prebuilt installers for the most common platforms are listed below.
 
-## Requirements
+> **Note:** Public distribution channels are being prepared. Until then, the CLI is available to early users on request — contact [contact@miransas.com](mailto:contact@miransas.com).
 
-- Git
-- Go (matching the version in the repo's `go.mod`)
-- `make`
-
-## Build from source
+## npm
 
 ```bash
-git clone https://github.com/Miransas/binboi.git
-cd binboi
-make build-cli
-sudo mv dist/binboi /usr/local/bin/
+npm install -g @binboi/cli
 ```
+
+_Coming soon._
+
+## Homebrew (macOS / Linux)
+
+```bash
+brew install miransas/tap/binboi
+```
+
+_Coming soon._
+
+## Cargo
+
+```bash
+cargo install binboi-cli
+```
+
+_Coming soon._
+
+## pip
+
+```bash
+pip install binboi
+```
+
+_Coming soon._
+
+## Curl installer
+
+```bash
+curl -fsSL https://binboi.com/install.sh | sh
+```
+
+_Coming soon._
 
 ## Verify
 
+After installation, confirm the CLI is on your `PATH`:
+
 ```bash
-binboi --version
+binboi version
 ```
 
-If the command is not found, confirm that `/usr/local/bin` is on your `PATH`.
+If the command is not found, add `/usr/local/bin` (or your platform's equivalent) to your `PATH`.
 
-## Upgrade
+## Configuration
 
-Pull the latest source and rebuild:
+The CLI stores its config in `~/.binboi/config.json`. This includes your saved access token and any server overrides.
+
+To reset:
 
 ```bash
-cd binboi
-git pull
-make build-cli
-sudo mv dist/binboi /usr/local/bin/
+rm -rf ~/.binboi
 ```
 
 ## Next
 
-- [Authentication](/docs/authentication) — generate and configure a PAT.
+- [Authentication](/docs/authentication) — generate an access token.
 - [Quick start](/docs/quick_start) — open your first tunnel.
+- [CLI reference](/docs/cli) — all commands.

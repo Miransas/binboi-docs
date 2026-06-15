@@ -1,8 +1,5 @@
 // constants/docs-menu.ts
-import { 
-  Monitor, Apple, Terminal, Box, Shield, 
-  Cpu, Code2, Globe, Bug, Settings 
-} from "lucide-react";
+import { Box, Globe, Server, Shield, Terminal, Waypoints, Wrench } from "lucide-react";
 
 export const SIDEBAR_MENU = [
   {
@@ -14,36 +11,18 @@ export const SIDEBAR_MENU = [
     ],
   },
   {
-    group: "Platform Guides",
+    group: "Core",
     items: [
-      { name: "Windows", href: "/docs/windows", icon: Monitor },
-      { name: "macOS", href: "/docs/mac", icon: Apple },
-      { name: "Linux", href: "/docs/linux", icon: Terminal },
-    ],
-  },
-  {
-    group: "SDKs & Languages",
-    items: [
-      { name: "JavaScript", href: "/docs/js", icon: Code2 },
-      { name: "Python", href: "/docs/python", icon: Code2 },
-      { name: "Rust", href: "/docs/rust", icon: Cpu },
-    ],
-  },
-  {
-    group: "Core Features",
-    items: [
-      { name: "CLI Reference", href: "/docs/cli" },
       { name: "Authentication", href: "/docs/authentication", icon: Shield },
-      { name: "HTTP Tunnels", href: "/docs/http_tunnels" },
-      { name: "Webhooks", href: "/docs/webhooks" },
+      { name: "CLI Reference", href: "/docs/cli", icon: Terminal },
+      { name: "HTTP Tunnels", href: "/docs/http_tunnels", icon: Waypoints },
+      { name: "API", href: "/docs/api", icon: Server },
     ],
   },
   {
-    group: "Troubleshooting",
+    group: "Support",
     items: [
-      { name: "Logs", href: "/docs/logs" },
-      { name: "Bugs", href: "/docs/bugs", icon: Bug },
-      { name: "Debugging", href: "/docs/debugging", icon: Settings },
+      { name: "Troubleshooting", href: "/docs/troubleshooting", icon: Wrench },
     ],
   },
 ];

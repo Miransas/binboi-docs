@@ -1,48 +1,85 @@
 # HTTP Tunnels
 
-An HTTP tunnel forwards public HTTPS traffic at `https://<subdomain>.binboi.com` to a local HTTP port on your machine.
+Binboi only exposes HTTP. The CLI forwards a public HTTPS URL at `https://<subdomain>.binboi.com` to a local plain-HTTP port. TLS terminates at the Binboi edge in Frankfurt — your local server speaks plain HTTP.
 
-## How it works
+## How tunnels work
 
+When you run `binboi http <port>`, the CLI dials the relay at `binboi.com:8081` and opens a yamux-multiplexed connection over TCP. The control plane claims `<subdomain>.binboi.com` for that connection. Inbound HTTPS requests are decrypted at the edge, framed over the yamux session, and forwarded to the CLI, which proxies them to `http://localhost:<port>`.
+
+## Subdomain assignment
+
+| Plan | Subdomain |
+|---|---|
+| Free | Random per session, rotates every time you start the tunnel |
+| Pro | Reserved subdomains — persist across sessions |
+| Max | Reserved subdomains + custom domains |
+
+Random subdomains look like `wispy-otter-7421.binboi.com` and are released back to the pool when the tunnel closes. Reserved subdomains stay attached to your account until you release them from the dashboard.
+
+```bash
+# Random subdomain (Free)
+binboi http 3000
+
+# Reserved subdomain (Pro / Max)
+binboi http 3000 my-app
 ```
-Browser ──HTTPS──▶ https://my-app.binboi.com ──tunnel──▶ http://localhost:3000
-```
 
-1. The CLI opens a long-lived connection to the Binboi edge.
-2. The edge claims `<subdomain>.binboi.com` for that connection.
-3. Incoming HTTPS requests are decrypted at the edge and forwarded through the tunnel to your local port.
-4. Responses flow back through the same connection.
+## Request lifecycle
 
-Your local server only speaks plain HTTP — TLS terminates at the edge.
+1. Client sends a request to `https://<subdomain>.binboi.com`.
+2. DNS resolves to the Binboi edge.
+3. Caddy terminates TLS at the edge.
+4. The control plane looks up the active tunnel bound to `<subdomain>`.
+5. The request is forwarded over the yamux session to the CLI.
+6. The CLI proxies it to `http://localhost:<port>` and streams the response back along the same path.
 
-## Open a tunnel
+If no tunnel is active for the subdomain, the edge returns `502 Bad Gateway`.
+
+## Request retention
+
+Every request is recorded and inspectable at [binboi.com/dashboard/requests](https://binboi.com/dashboard/requests).
+
+| Plan | Retention |
+|---|---|
+| Free | 24 hours |
+| Pro | 7 days |
+| Max | 30 days |
+
+After the retention window, requests are purged.
+
+## Limits per plan
+
+| Plan | Active tunnels | Active tokens | Reserved subdomains | Custom domains |
+|---|---|---|---|---|
+| Free | 1 | 2 | — | — |
+| Pro | 10 | 25 | ✅ | — |
+| Max | 50 | 100 | ✅ | ✅ |
+
+Active token quota frees up when you revoke a token.
+
+## Reserved subdomains
+
+Pro and Max can reserve subdomains so they persist across CLI sessions. Reserve one of two ways:
+
+- From the dashboard at [binboi.com/dashboard](https://binboi.com/dashboard).
+- By passing it positionally on `binboi http`:
 
 ```bash
 binboi http 3000 my-app
 ```
 
-This requires:
-
-- An authenticated CLI (`binboi login`).
-- An available subdomain (one not currently used by another account).
-- Remaining capacity under your plan's tunnel and request quotas.
-
-## Quotas
-
-Every HTTP request through a tunnel counts against your daily request budget.
-
-| Plan | Active tunnels | Requests / day |
-|---|---|---|
-| Free | 1 | 100 |
-| Pro | 10 | 10,000 |
-| Max | 50 | Unlimited |
-
-When the daily limit is hit, the edge returns `429 Too Many Requests` until the next UTC day rolls over.
-
-## Close a tunnel
-
-Press `Ctrl+C` in the terminal that started it. The subdomain is released back to the pool immediately.
+The first successful reservation locks the subdomain to your account. Free accounts cannot reserve — pass no subdomain and accept the random one.
 
 ## Custom domains
 
-Pro and Max plans can attach custom domains (10 and 50 respectively) at [/dashboard](https://binboi.com/dashboard). Free accounts are limited to `*.binboi.com`.
+Max only. Bring your own domain by pointing it at the Binboi edge:
+
+1. In your DNS provider, add a `CNAME` record: `your-domain.com → cname.binboi.com`.
+2. Add the domain at [binboi.com/dashboard](https://binboi.com/dashboard) and click **Verify**.
+3. The edge auto-provisions a TLS certificate. Traffic to `https://your-domain.com` is now routed to your active tunnel.
+
+## Next
+
+- [CLI reference](/docs/cli) — every command and flag.
+- [API reference](/docs/api) — list and close tunnels programmatically.
+- [Troubleshooting](/docs/troubleshooting) — fixes for tunnel and routing errors.

@@ -208,7 +208,7 @@ export default function RootLayout({
               logo: "https://miransas.com/logo.png",
               sameAs: [
                 "https://github.com/Miransas",
-                "https://twitter.com/miransas",
+                "https://twitter.com/miransaas",
               ],
             }),
           }}

@@ -1,3 +1,122 @@
 # Troubleshooting
 
-Documentation in progress. Check back soon, or [open an issue on GitHub](https://github.com/Miransas/binboi/issues).
+Common errors and how to fix them.
+
+## CLI
+
+### `binboi: command not found`
+
+**Cause:** The CLI binary is not on your `PATH`.
+
+**Fix:**
+
+```bash
+export PATH="/usr/local/bin:$PATH"
+```
+
+Add the line to `~/.zshrc` or `~/.bashrc` to make it persistent.
+
+### Login fails with `connection refused` to 127.0.0.1:8080
+
+**Cause:** `BINBOI_API_URL` is pointing at localhost instead of the production API.
+
+**Fix:**
+
+```bash
+unset BINBOI_API_URL
+# or, to set it explicitly:
+export BINBOI_API_URL=https://api.binboi.com
+```
+
+### Tunnel fails with `dial tcp` to 127.0.0.1:8081
+
+**Cause:** `BINBOI_SERVER_ADDR` is misconfigured. The default relay is `binboi.com:8081`.
+
+**Fix:**
+
+```bash
+unset BINBOI_SERVER_ADDR
+# or, to set it explicitly:
+export BINBOI_SERVER_ADDR=binboi.com:8081
+```
+
+## Auth
+
+### `401 Unauthorized`
+
+**Cause:** Token revoked, malformed, or never created.
+
+**Fix:** Generate a new token and log in again.
+
+```bash
+# Get a new token at https://binboi.com/dashboard/access-tokens
+binboi login --token binboi_pat_<new>
+```
+
+### `403 TOKEN_LIMIT_REACHED`
+
+**Cause:** Your account is at its active token cap (2 on Free, 25 on Pro, 100 on Max).
+
+**Fix:** Revoke an unused token from the dashboard, or upgrade your plan.
+
+```bash
+curl -X DELETE https://api.binboi.com/v1/tokens/<token_id> \
+  -H "Authorization: Bearer binboi_pat_..."
+```
+
+## Tunnels
+
+### `403 TUNNEL_LIMIT_REACHED`
+
+**Cause:** Too many active tunnels (1 on Free, 10 on Pro, 50 on Max).
+
+**Fix:** Close an existing tunnel or upgrade your plan.
+
+```bash
+binboi tunnels
+# pick one and close it
+curl -X DELETE https://api.binboi.com/v1/tunnels/<subdomain> \
+  -H "Authorization: Bearer binboi_pat_..."
+```
+
+### `409 SUBDOMAIN_TAKEN`
+
+**Cause:** Someone else has already reserved that subdomain. Reserved subdomains are Pro/Max only and are first-come-first-served.
+
+**Fix:** Pick a different subdomain.
+
+```bash
+binboi http 3000 my-app-2
+```
+
+### Tunnel disconnects after a few seconds
+
+**Cause:** Network instability or NAT timeout between your machine and the Frankfurt relay.
+
+**Fix:** Restart the tunnel. If it keeps happening, contact support.
+
+```bash
+binboi http 3000
+```
+
+## Account
+
+### Email verification not arriving
+
+**Cause:** Mail filters or a typo at signup.
+
+**Fix:**
+
+1. Check your spam folder.
+2. Request a new verification email from the login page.
+3. If still missing, email [contact@miransas.com](mailto:contact@miransas.com).
+
+---
+
+Still stuck? Email [contact@miransas.com](mailto:contact@miransas.com) with your token prefix (first 12 chars only, **not** the full token) and a description of what you've tried.
+
+## Next
+
+- [CLI reference](/docs/cli) — all commands, flags, and env vars.
+- [API reference](/docs/api) — full list of error codes.
+- [HTTP tunnels](/docs/http_tunnels) — how routing and quotas work.

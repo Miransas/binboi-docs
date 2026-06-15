@@ -1,206 +1,220 @@
 # API Reference
 
-Binboi exposes a REST API at `https://api.binboi.com`. All endpoints accept and return JSON.
+Base URL: `https://api.binboi.com`. All endpoints accept and return JSON.
+
+> Endpoints are subject to change before v1.0.
 
 ## Authentication
 
-Include your PAT or session JWT as a Bearer header:
+Every request requires a Personal Access Token in the `Authorization` header:
 
 ```http
-Authorization: Bearer binboi_pat_xxx...
+Authorization: Bearer binboi_pat_a1b2c3d4_0123456789abcdef0123456789abcdef
 ```
 
-Errors follow this shape:
+Generate tokens at [binboi.com/dashboard/access-tokens](https://binboi.com/dashboard/access-tokens).
 
-```json
-{
-  "code": "TOKEN_LIMIT_REACHED",
-  "error": "token limit reached for your plan"
-}
-```
+## Endpoints
 
-## Auth Endpoints
+### `GET /v1/me`
 
-### `POST /api/auth/register`
+Return the authenticated account.
 
-Create a new account. A verification email is sent from `noreply@miransas.com`.
-
-Request:
-
-```json
-{
-  "name": "Sardor",
-  "email": "sardor@example.com",
-  "password": "min8chars",
-  "confirm_password": "min8chars"
-}
-```
-
-Response `201`:
-
-```json
-{
-  "ok": true,
-  "user_id": "uuid",
-  "email": "sardor@example.com"
-}
-```
-
-### `POST /api/auth/login`
-
-Sign in with email and password.
-
-Request:
-
-```json
-{ "email": "sardor@example.com", "password": "..." }
+```bash
+curl https://api.binboi.com/v1/me \
+  -H "Authorization: Bearer binboi_pat_..."
 ```
 
 Response `200`:
 
 ```json
 {
-  "token": "eyJhbG...",
-  "user": {
-    "id": "uuid",
-    "email": "sardor@example.com",
-    "name": "Sardor",
-    "plan": "FREE"
-  }
+  "id": "usr_4f2b9a7e",
+  "email": "you@example.com",
+  "plan": "FREE"
 }
 ```
 
-Errors:
+### `GET /v1/tokens`
 
-- `403 EMAIL_NOT_VERIFIED` — verify your email before signing in
-- `401` — invalid credentials
+List your active tokens. Revoked tokens are not returned.
 
-### `POST /api/auth/verify-email`
-
-Verify an account using the token from the verification email.
-
-Request: `{ "token": "..." }`
-
-Response `200`: `{ "ok": true, "email": "..." }`
-
-### `POST /api/auth/forgot-password`
-
-Send a password reset email. Returns `200` even if the email is unknown (prevents enumeration).
-
-Request: `{ "email": "..." }`
-
-### `POST /api/auth/reset-password`
-
-Set a new password using the token from the reset email.
-
-Request: `{ "token": "...", "new_password": "..." }`
-
-Response `200`: `{ "ok": true }`
-
-## Token Endpoints
-
-### `GET /api/v1/tokens`
-
-List your Personal Access Tokens.
+```bash
+curl https://api.binboi.com/v1/tokens \
+  -H "Authorization: Bearer binboi_pat_..."
+```
 
 Response `200`:
 
 ```json
 {
-  "auth_mode": "account",
-  "user": { "id": "...", "email": "...", "plan": "FREE" },
-  "limits": {
-    "plan": "FREE",
-    "max_tokens": 3,
-    "max_tunnels": 1,
-    "tokens_used": 1,
-    "active_tunnels": null
-  },
   "tokens": [
     {
-      "id": "uuid",
-      "name": "CLI token",
+      "id": "tok_7c3a1d20",
+      "label": "laptop",
       "prefix": "binboi_pat_a1b2c3d4",
-      "status": "ACTIVE",
-      "createdAt": "2026-05-26T19:48:12Z",
-      "lastUsedAt": null,
-      "revokedAt": null
+      "created_at": "2026-05-26T19:48:12Z",
+      "last_used_at": "2026-06-14T08:11:03Z"
     }
   ]
 }
 ```
 
-### `POST /api/v1/tokens`
+### `POST /v1/tokens`
 
-Create a new PAT.
+Create a new token. The full token is returned **once** — store it immediately.
 
-Request: `{ "name": "CLI token" }`
+```bash
+curl -X POST https://api.binboi.com/v1/tokens \
+  -H "Authorization: Bearer binboi_pat_..." \
+  -H "Content-Type: application/json" \
+  -d '{"label":"ci-runner"}'
+```
 
 Response `201`:
 
 ```json
 {
-  "token": "binboi_pat_a1b2c3d4_x9y8z7w6...",
-  "record": { "id": "...", "name": "CLI token", "prefix": "binboi_pat_a1b2c3d4" }
+  "id": "tok_a91f0b3e",
+  "label": "ci-runner",
+  "prefix": "binboi_pat_a91f0b3e",
+  "token": "binboi_pat_a91f0b3e_4d5e6f708192a3b4c5d6e7f80910a2b3",
+  "created_at": "2026-06-15T12:04:18Z"
 }
 ```
 
-The full `token` is returned only once.
+### `DELETE /v1/tokens/:id`
 
-Errors:
+Revoke a token. Any tunnels using it are closed immediately. Frees one slot from your active token quota.
 
-- `403 TOKEN_LIMIT_REACHED` — upgrade or revoke an existing token
+```bash
+curl -X DELETE https://api.binboi.com/v1/tokens/tok_a91f0b3e \
+  -H "Authorization: Bearer binboi_pat_..."
+```
 
-### `DELETE /api/v1/tokens/:id`
+Response `204` (no body).
 
-Revoke a token. Any active tunnels using it are closed immediately.
+### `GET /v1/tunnels`
 
-Response `204`.
+List active tunnels on your account.
 
-## Tunnel Endpoints
-
-### `GET /api/v1/tunnels`
-
-List your active tunnels.
-
-### `POST /api/v1/tunnels`
-
-Create a tunnel (typically used by the CLI, not directly).
-
-### `DELETE /api/v1/tunnels/:id`
-
-Close a tunnel.
-
-## Account Endpoints
-
-### `GET /api/v1/auth/me`
-
-Return the current authenticated user.
+```bash
+curl https://api.binboi.com/v1/tunnels \
+  -H "Authorization: Bearer binboi_pat_..."
+```
 
 Response `200`:
 
 ```json
 {
-  "user": { "id": "...", "email": "...", "name": "...", "plan": "FREE" }
+  "tunnels": [
+    {
+      "subdomain": "my-app",
+      "port": 3000,
+      "started_at": "2026-06-15T11:02:44Z",
+      "token_id": "tok_7c3a1d20"
+    },
+    {
+      "subdomain": "wispy-otter-7421",
+      "port": 8080,
+      "started_at": "2026-06-15T12:01:11Z",
+      "token_id": "tok_7c3a1d20"
+    }
+  ]
 }
 ```
 
-### `PUT /api/v1/auth/me`
+### `GET /v1/tunnels/:subdomain`
 
-Update name or password.
+Get detail for a single tunnel.
 
-### `DELETE /api/v1/auth/me`
+```bash
+curl https://api.binboi.com/v1/tunnels/my-app \
+  -H "Authorization: Bearer binboi_pat_..."
+```
 
-Delete the account.
+Response `200`:
 
-## Rate Limits
+```json
+{
+  "subdomain": "my-app",
+  "port": 3000,
+  "started_at": "2026-06-15T11:02:44Z",
+  "token_id": "tok_7c3a1d20",
+  "reserved": true
+}
+```
 
-- 60 requests per minute per token for write endpoints
-- 600 requests per minute per token for read endpoints
+### `DELETE /v1/tunnels/:subdomain`
 
-Responses include `X-RateLimit-Remaining` and `X-RateLimit-Reset` headers.
+Close an active tunnel.
 
-## See Also
+```bash
+curl -X DELETE https://api.binboi.com/v1/tunnels/my-app \
+  -H "Authorization: Bearer binboi_pat_..."
+```
 
-- [Authentication](/docs/authentication)
-- [CLI Reference](/docs/cli)
+Response `204` (no body).
+
+### `GET /v1/requests?subdomain=<sub>`
+
+Recent requests captured for a tunnel, within the plan's retention window.
+
+```bash
+curl "https://api.binboi.com/v1/requests?subdomain=my-app" \
+  -H "Authorization: Bearer binboi_pat_..."
+```
+
+Response `200`:
+
+```json
+{
+  "requests": [
+    {
+      "id": "req_182f0",
+      "method": "GET",
+      "path": "/health",
+      "status": 200,
+      "duration_ms": 12,
+      "received_at": "2026-06-15T12:02:11Z"
+    },
+    {
+      "id": "req_182ef",
+      "method": "POST",
+      "path": "/api/login",
+      "status": 401,
+      "duration_ms": 43,
+      "received_at": "2026-06-15T12:02:09Z"
+    }
+  ]
+}
+```
+
+## Errors
+
+All errors follow this shape:
+
+```json
+{ "error": { "code": "TOKEN_LIMIT_REACHED", "message": "Active token limit reached for plan FREE" } }
+```
+
+| Code | HTTP | Meaning |
+|---|---|---|
+| `UNAUTHORIZED` | 401 | Token missing, malformed, or revoked. |
+| `TOKEN_LIMIT_REACHED` | 403 | Active token cap hit. Revoke one or upgrade. |
+| `TUNNEL_LIMIT_REACHED` | 403 | Active tunnel cap hit. Close one or upgrade. |
+| `SUBDOMAIN_TAKEN` | 409 | Reserved subdomain already owned by another account. |
+| `NOT_FOUND` | 404 | Resource does not exist on this account. |
+| `RATE_LIMITED` | 429 | Throttled. See `Retry-After` header. |
+
+## Rate limits
+
+100 requests/minute per token by default. Subject to change.
+
+When throttled, the response is `429 RATE_LIMITED` with a `Retry-After` header in seconds.
+
+## Next
+
+- [CLI reference](/docs/cli) — the CLI is a thin wrapper over this API.
+- [HTTP tunnels](/docs/http_tunnels) — what a tunnel resource represents.
+- [Troubleshooting](/docs/troubleshooting) — decoding error codes in the wild.

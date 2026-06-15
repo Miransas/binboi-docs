@@ -3,8 +3,11 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
-import { Pencil, GitBranch } from "lucide-react";
+import { Pencil } from "lucide-react";
+import { FaGithub } from "react-icons/fa";
 import { cn } from "@/lib/utils";
+import { VscIssues } from "react-icons/vsc";
+
 
 type Heading = {
   id: string;
@@ -12,8 +15,9 @@ type Heading = {
   level: number;
 };
 
-const GITHUB_EDIT_BASE =
-  "https://github.com/Miransas/binboi-docs/edit/main/app/docs";
+const GITHUB_REPO = "https://github.com/Miransas/binboi-docs";
+const GITHUB_EDIT_BASE = `${GITHUB_REPO}/edit/main/app/docs`;
+const GITHUB_ISSUES = `${GITHUB_REPO}/issues/new`;
 
 export function TableOfContents() {
   const pathname = usePathname();
@@ -98,7 +102,7 @@ export function TableOfContents() {
 
       <div className="h-px bg-white/[0.06]" />
 
-      <div className="space-y-3">
+      <div className="flex flex-col gap-2.5">
         <a
           href={editUrl}
           target="_blank"
@@ -106,17 +110,27 @@ export function TableOfContents() {
           className="inline-flex items-center gap-2 text-[0.8rem] text-white/40 transition-colors hover:text-lime-400"
         >
           <Pencil className="h-3.5 w-3.5" />
-          Edit this page on GitHub
+          Edit this page
         </a>
 
         <a
-          href="https://github.com/Miransas/binboi"
+          href={GITHUB_REPO}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex items-center gap-2 text-[0.8rem] text-white/40 transition-colors hover:text-white/70"
+          className="inline-flex items-center gap-2 text-[0.8rem] text-white/40 transition-colors hover:text-lime-400"
         >
-          <GitBranch className="h-3.5 w-3.5" />
-          GitHub
+          <FaGithub className="h-3.5 w-3.5" />
+          View on GitHub
+        </a>
+
+        <a
+          href={GITHUB_ISSUES}
+          target="_blank"
+          rel="noreferrer"
+          className="inline-flex items-center gap-2 text-[0.8rem] text-white/40 transition-colors hover:text-lime-400"
+        >
+          <VscIssues className="h-3.5 w-3.5" />
+          Report an issue
         </a>
       </div>
     </div>

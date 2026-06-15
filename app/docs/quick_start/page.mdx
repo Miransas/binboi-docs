@@ -1,51 +1,47 @@
 # Quick Start
 
-Get a local port exposed at `https://<subdomain>.binboi.com` in four steps.
+Get a local port exposed at `https://<your-subdomain>.binboi.com` in four steps.
 
 ## 1. Create an account
 
-Sign up at [binboi.com](https://binboi.com) and verify your email. New accounts start on the Free plan.
+Sign up at [binboi.com](https://binboi.com) and verify your email. The verification link arrives from `noreply@binboi.com`. New accounts start on the Free plan.
 
-## 2. Generate a Personal Access Token
+## 2. Generate an access token
 
-Open [binboi.com/dashboard/access-tokens](https://binboi.com/dashboard/access-tokens) and click **Create token**. The token is shown once in a modal with a **Copy** button — copy it now and store it somewhere safe. It cannot be retrieved later.
+Open [binboi.com/dashboard/access-tokens](https://binboi.com/dashboard/access-tokens) and click **Generate Token**. The token is shown once in a modal with a **Copy** button — copy it now and store it somewhere safe (a password manager is fine). It cannot be retrieved later.
 
-Token format:
-
-```
-binboi_pat_<8 hex>_<32 hex>
-```
-
-The Free plan allows one PAT for the lifetime of the account.
+Token format: `binboi_pat_<8 hex>_<32 hex>`
+The Free plan allows up to 2 active tokens. If you hit the cap, revoke an existing token or upgrade.
 
 ## 3. Install the CLI
 
-The CLI is currently built from source. Homebrew and a curl installer are coming.
+Pick your platform — see [Installation](/docs/installation) for full options.
 
 ```bash
-git clone https://github.com/Miransas/binboi.git
-cd binboi
-make build-cli
-sudo mv dist/binboi /usr/local/bin/
+# npm (coming soon)
+npm install -g @binboi/cli
+
+# Homebrew (coming soon)
+brew install miransas/tap/binboi
 ```
 
-Verify:
-
-```bash
-binboi --version
-```
+While public distribution is being prepared, contact [contact@miransas.com](mailto:contact@miransas.com) for early access to the CLI binary.
 
 ## 4. Log in and open a tunnel
 
 ```bash
 binboi login --token binboi_pat_xxxxxxxx_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-binboi http 3000 my-app
+binboi http 3000
 ```
 
-Your local service on port `3000` is now reachable at:
+Your local service on port `3000` is now reachable at a randomly assigned URL — the CLI prints it on startup:
 
-```
-https://my-app.binboi.com
+Forwarding  https://wispy-otter-7421.binboi.com → http://localhost:3000
+
+Pro and Max users can request a specific subdomain:
+
+```bash
+binboi http 3000 --subdomain my-app
 ```
 
 Press `Ctrl+C` to stop the tunnel.

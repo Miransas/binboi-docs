@@ -6,19 +6,20 @@ import {
   ArrowRight,
   BookOpen,
   ChevronRight,
-  Code2,
   Command,
   Search,
+  Server,
   Shield,
+  Terminal,
   Waypoints,
-  Webhook,
+  Wrench,
 } from "lucide-react";
 
 const featuredLinks = [
   {
     title: "Quick Start",
     description: "Get your first Binboi tunnel running in minutes.",
-    href: "/docs/quick-start",
+    href: "/docs/quick_start",
     icon: ChevronRight,
   },
   {
@@ -34,22 +35,28 @@ const featuredLinks = [
     icon: Shield,
   },
   {
+    title: "CLI Reference",
+    description: "Every command and flag the Binboi CLI ships with.",
+    href: "/docs/cli",
+    icon: Terminal,
+  },
+  {
     title: "HTTP Tunnels",
     description: "Expose your local apps with clean tunnel workflows.",
-    href: "/docs/http-tunnels",
+    href: "/docs/http_tunnels",
     icon: Waypoints,
   },
   {
-    title: "Webhooks",
-    description: "Debug incoming requests and inspect webhook traffic.",
-    href: "/docs/webhooks",
-    icon: Webhook,
+    title: "API",
+    description: "Automate workspace operations through the Binboi API.",
+    href: "/docs/api",
+    icon: Server,
   },
   {
-    title: "JavaScript SDK",
-    description: "Use Binboi with Node.js and modern JS apps.",
-    href: "/docs/sdk/javascript",
-    icon: Code2,
+    title: "Troubleshooting",
+    description: "Resolve tunnel, auth, and traffic problems with a checklist.",
+    href: "/docs/troubleshooting",
+    icon: Wrench,
   },
 ];
 
@@ -114,7 +121,7 @@ export default function DocsHomePage() {
         <FadeUp delay={0.15}>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Link
-              href="/docs/quick-start"
+              href="/docs/quick_start"
               className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.05] px-4 py-3 text-sm text-white transition-colors hover:bg-white/[0.08]"
             >
               Start with Quick Start

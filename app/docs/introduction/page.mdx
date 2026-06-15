@@ -1,6 +1,6 @@
 # Introduction
 
-Binboi is a tunneling service that exposes a local port to the public internet over HTTPS. You run a binary on your machine, Binboi gives you a `https://<subdomain>.binboi.com` URL, and traffic to that URL is forwarded to your local process.
+Binboi is a tunneling service that exposes a local port to the public internet over HTTPS. You run the CLI on your machine, Binboi gives you a `https://<subdomain>.binboi.com` URL, and traffic to that URL is forwarded to your local process.
 
 ## What you can do with it
 
@@ -12,22 +12,22 @@ Binboi is a tunneling service that exposes a local port to the public internet o
 ## Key features
 
 - HTTPS by default on every tunnel — TLS terminates at the Binboi edge.
-- Authentication via Personal Access Tokens (PATs) — no passwords in the CLI.
-- Tunnel state and traffic visible at [binboi.com/dashboard](https://binboi.com/dashboard).
+- Authentication via Personal Access Tokens — no passwords in the CLI.
+- Tunnel state and request inspection at [binboi.com/dashboard](https://binboi.com/dashboard).
 - REST API at [api.binboi.com](https://api.binboi.com) for programmatic control.
 
 ## Plans
 
-| Plan | Tunnels | PATs | Requests / day | Custom domains | Price |
-|---|---|---|---|---|---|
-| Free | 1 active | 1 (lifetime) | 100 | 0 | $0 |
-| Pro | 10 | 25 | 10,000 | 10 | $10 / mo |
-| Max | 50 | 100 | Unlimited | 50 | $19 / mo |
+| Plan | Tunnels | Tokens | Request retention | Subdomains | Custom domains | Price |
+|---|---|---|---|---|---|---|
+| Free | 1 | 2 | 24 hours | Random | — | $0 |
+| Pro | 10 | 25 | 7 days | Reserved | — | $10 / mo |
+| Max | 50 | 100 | 30 days | Reserved | ✅ | $19 / mo |
 
-Billing is handled through [Polar.sh](https://polar.sh). Cancel anytime from [/dashboard/billing](https://binboi.com/dashboard/billing).
+Billing is handled through [Polar.sh](https://polar.sh). Cancel or refund anytime from [/dashboard/billing](https://binboi.com/dashboard/billing).
 
 ## Next steps
 
 - [Quick start](/docs/quick_start) — open your first tunnel in four steps.
-- [Installation](/docs/installation) — build the CLI from source.
-- [Authentication](/docs/authentication) — create and use a PAT.
+- [Installation](/docs/installation) — install the CLI.
+- [Authentication](/docs/authentication) — create and use a token.
