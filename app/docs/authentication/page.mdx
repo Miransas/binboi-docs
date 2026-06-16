@@ -5,10 +5,16 @@ Binboi authenticates CLI and API requests with a Personal Access Token (PAT). Th
 ## Token format
 
 ```
-binboi_pat_<8 hex>_<32 hex>
+binboi_pat_<8 hex>_<36 hex>
 ```
 
-A token is exactly 56 characters. The prefix `binboi_pat_` makes tokens easy to scan for in logs and CI secrets.
+A token is exactly 56 characters: the `binboi_pat_` prefix (11 chars), an 8-character hex prefix, an underscore, and a 36-character hex secret. The prefix makes tokens easy to scan for in logs and CI secrets.
+
+Example shape:
+
+```
+binboi_pat_7337cc8b_95cc41b4131fad19a68964de9dccdf81ff06
+```
 
 ## Create a token
 
@@ -21,20 +27,22 @@ If you lose a token, revoke it and issue a new one.
 
 ## Token quotas
 
-PATs count against your plan's lifetime token budget — not just active tokens. Revoked tokens still count.
+PATs count against your plan's **active** token cap. Revoking a token immediately frees its slot.
 
-| Plan | Lifetime PATs |
-|---|---|
-| Free | 1 |
-| Pro | 25 |
-| Max | 100 |
+| Plan | Active PATs | Reserved tunnels |
+|---|---|---|
+| Free | 2 | — |
+| Pro | 25 | 10 |
+| Max | 100 | 50 |
+
+The dashboard's **Active Credentials** card shows current usage. The refresh icon occasionally fails to repaint immediately — reload the page if the number looks stale (known minor UI bug, the backend numbers are correct).
 
 ## Use a token
 
 ### CLI
 
 ```bash
-binboi login --token binboi_pat_xxxxxxxx_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+binboi login --token binboi_pat_xxxxxxxx_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
 The token is written to `~/.binboi/config.json` and used by every subsequent CLI command.
@@ -44,13 +52,13 @@ The token is written to `~/.binboi/config.json` and used by every subsequent CLI
 Pass the token in the `Authorization` header on every request to `api.binboi.com`:
 
 ```http
-Authorization: Bearer binboi_pat_xxxxxxxx_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+Authorization: Bearer binboi_pat_xxxxxxxx_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
 Example:
 
 ```bash
-curl https://api.binboi.com/v1/tunnels \
+curl https://api.binboi.com/api/v1/tunnels \
   -H "Authorization: Bearer $BINBOI_AUTH_TOKEN"
 ```
 

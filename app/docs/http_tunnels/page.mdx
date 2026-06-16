@@ -4,7 +4,7 @@ Binboi only exposes HTTP. The CLI forwards a public HTTPS URL at `https://<subdo
 
 ## How tunnels work
 
-When you run `binboi http <port>`, the CLI dials the relay at `binboi.com:8081` and opens a yamux-multiplexed connection over TCP. The control plane claims `<subdomain>.binboi.com` for that connection. Inbound HTTPS requests are decrypted at the edge, framed over the yamux session, and forwarded to the CLI, which proxies them to `http://localhost:<port>`.
+When you run `binboi http <port>`, the CLI dials the relay at `api.binboi.com:8081` and opens a yamux-multiplexed connection over TCP. The control plane claims `<subdomain>.binboi.com` for that connection. Inbound HTTPS requests are decrypted at the edge, framed over the yamux session, and forwarded to the CLI, which proxies them to `http://localhost:<port>`.
 
 ## Subdomain assignment
 
@@ -23,6 +23,19 @@ binboi http 3000
 # Reserved subdomain (Pro / Max)
 binboi http 3000 my-app
 ```
+
+## CLI dashboard
+
+Once the tunnel is up, the CLI replaces its startup output with a live, ngrok-style dashboard:
+
+- Tunnel URL (`https://<sub>.binboi.com → localhost:<port>`)
+- Relay address and ping latency
+- Uptime counter
+- Request and error counters, downstream / upstream bytes
+- p50 / p90 latency
+- A scrolling recent-requests table (method, path, status, RTT, time)
+
+Press Ctrl+C to close the tunnel. For full request bodies and headers, see [binboi.com/dashboard/requests](https://binboi.com/dashboard/requests).
 
 ## Request lifecycle
 

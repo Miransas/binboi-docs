@@ -1,3 +1,5 @@
+import { PricingTable } from "@/components/pricing-table"
+
 # Introduction
 
 Binboi is a tunneling service that exposes a local port to the public internet over HTTPS. You run the CLI on your machine, Binboi gives you a `https://<subdomain>.binboi.com` URL, and traffic to that URL is forwarded to your local process.
@@ -18,11 +20,7 @@ Binboi is a tunneling service that exposes a local port to the public internet o
 
 ## Plans
 
-| Plan | Tunnels | Tokens | Request retention | Subdomains | Custom domains | Price |
-|---|---|---|---|---|---|---|
-| Free | 1 | 2 | 24 hours | Random | — | $0 |
-| Pro | 10 | 25 | 7 days | Reserved | — | $10 / mo |
-| Max | 50 | 100 | 30 days | Reserved | ✅ | $19 / mo |
+<PricingTable />
 
 Billing is handled through [Polar.sh](https://polar.sh). Cancel or refund anytime from [/dashboard/billing](https://binboi.com/dashboard/billing).
 

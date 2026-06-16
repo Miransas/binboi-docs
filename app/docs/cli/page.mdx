@@ -16,13 +16,13 @@ Flags:
 
 | Flag | Purpose |
 |---|---|
-| `--token <token>` | Personal access token in the form `binboi_pat_<8 hex>_<32 hex>`. |
-| `--server <host:port>` | Override the relay address. Defaults to `binboi.com:8081`. |
+| `--token <token>` | Personal access token in the form `binboi_pat_<8 hex>_<36 hex>` (56 chars total). |
+| `--server <host:port>` | Override the relay address. Defaults to `api.binboi.com:8081`. |
 
 Example:
 
 ```bash
-binboi login --token binboi_pat_a1b2c3d4_0123456789abcdef0123456789abcdef
+binboi login --token binboi_pat_a1b2c3d4_0123456789abcdef0123456789abcdef0123
 ```
 
 Output:
@@ -42,7 +42,7 @@ binboi logout
 
 ### `whoami`
 
-Print the account associated with the cached token.
+Print the account associated with the cached token. Accepts only `--token` (or `-token`) — no `-v`, `--verbose`, or `--debug` flags.
 
 ```bash
 binboi whoami
@@ -70,12 +70,16 @@ Example:
 binboi http 3000
 ```
 
-Output:
+On startup the CLI replaces its output with a live, ngrok-style dashboard:
 
-```
-Forwarding  https://wispy-otter-7421.binboi.com → http://localhost:3000
+- Tunnel URL (`https://<sub>.binboi.com → localhost:<port>`)
+- Relay address and ping latency
+- Uptime counter
+- Request and error counters, downstream / upstream bytes
+- p50 / p90 latency
+- A recent-requests table (method, path, status, RTT, time)
+
 Press Ctrl+C to stop.
-```
 
 ### `start`
 
@@ -142,21 +146,47 @@ binboi version
 | Variable | Purpose | When to use |
 |---|---|---|
 | `BINBOI_API_URL` | Override the API base URL. Defaults to `https://api.binboi.com`. | Pointing the CLI at a staging API or a self-run mirror. |
-| `BINBOI_SERVER_ADDR` | Override the relay address. Defaults to `binboi.com:8081`. | Same as `--server` flag, but for non-interactive shells. |
+| `BINBOI_SERVER_ADDR` | Override the relay address. Defaults to `api.binboi.com:8081`. | Same as `--server` flag, but for non-interactive shells. |
 | `BINBOI_AUTH_TOKEN` | Inject the token without running `login`. | CI jobs, containers, ephemeral environments where writing to `~/.binboi/config.json` is undesirable. |
+| `BINBOI_TOKEN` | Same as `BINBOI_AUTH_TOKEN`, lower precedence. | Legacy / fallback. |
 
-Environment variables take precedence over values in the config file.
+### Resolution order
+
+Tokens:
+
+1. `--token` flag (explicit)
+2. `BINBOI_AUTH_TOKEN` env var
+3. `BINBOI_TOKEN` env var
+4. `~/.binboi/config.json`
+
+Relay and API URLs:
+
+1. `--server` / `--api` flags
+2. `BINBOI_SERVER_ADDR` / `BINBOI_API_URL` env vars
+3. `~/.binboi/config.json`
+4. Built-in defaults (`api.binboi.com:8081`, `https://api.binboi.com`)
+
+A stale env var set in your shell will silently override the config file — see [Troubleshooting](/docs/troubleshooting) if `login` succeeds but `whoami` immediately fails.
 
 ## Configuration file
 
 The CLI persists state in `~/.binboi/config.json`. It is written on `login` and read by every other command.
 
-Saved fields:
+Shape:
+
+```json
+{
+  "token": "binboi_pat_...",
+  "server_addr": "api.binboi.com:8081",
+  "api_url": "https://api.binboi.com"
+}
+```
 
 | Field | Source |
 |---|---|
 | `token` | The value passed to `--token` on `login`. |
-| `server` | The value passed to `--server`, if any. Otherwise unset. |
+| `server_addr` | Relay address. Defaults to `api.binboi.com:8081`. |
+| `api_url` | API base URL. Defaults to `https://api.binboi.com`. |
 
 To reset, run `binboi logout` or delete the file:
 

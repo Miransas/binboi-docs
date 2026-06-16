@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 import * as React from 'react';
 
 interface CommonControlledStateProps<T> {

@@ -1,6 +1,6 @@
 # API Reference
 
-Base URL: `https://api.binboi.com`. All endpoints accept and return JSON.
+Base URL: `https://api.binboi.com`. All endpoints are mounted under `/api/v1/` and accept and return JSON.
 
 > Endpoints are subject to change before v1.0.
 
@@ -9,19 +9,19 @@ Base URL: `https://api.binboi.com`. All endpoints accept and return JSON.
 Every request requires a Personal Access Token in the `Authorization` header:
 
 ```http
-Authorization: Bearer binboi_pat_a1b2c3d4_0123456789abcdef0123456789abcdef
+Authorization: Bearer binboi_pat_a1b2c3d4_0123456789abcdef0123456789abcdef0123
 ```
 
 Generate tokens at [binboi.com/dashboard/access-tokens](https://binboi.com/dashboard/access-tokens).
 
 ## Endpoints
 
-### `GET /v1/me`
+### `GET /api/v1/auth/me`
 
 Return the authenticated account.
 
 ```bash
-curl https://api.binboi.com/v1/me \
+curl https://api.binboi.com/api/v1/auth/me \
   -H "Authorization: Bearer binboi_pat_..."
 ```
 
@@ -35,12 +35,12 @@ Response `200`:
 }
 ```
 
-### `GET /v1/tokens`
+### `GET /api/v1/tokens`
 
 List your active tokens. Revoked tokens are not returned.
 
 ```bash
-curl https://api.binboi.com/v1/tokens \
+curl https://api.binboi.com/api/v1/tokens \
   -H "Authorization: Bearer binboi_pat_..."
 ```
 
@@ -60,12 +60,12 @@ Response `200`:
 }
 ```
 
-### `POST /v1/tokens`
+### `POST /api/v1/tokens`
 
 Create a new token. The full token is returned **once** — store it immediately.
 
 ```bash
-curl -X POST https://api.binboi.com/v1/tokens \
+curl -X POST https://api.binboi.com/api/v1/tokens \
   -H "Authorization: Bearer binboi_pat_..." \
   -H "Content-Type: application/json" \
   -d '{"label":"ci-runner"}'
@@ -78,28 +78,28 @@ Response `201`:
   "id": "tok_a91f0b3e",
   "label": "ci-runner",
   "prefix": "binboi_pat_a91f0b3e",
-  "token": "binboi_pat_a91f0b3e_4d5e6f708192a3b4c5d6e7f80910a2b3",
+  "token": "binboi_pat_a91f0b3e_4d5e6f708192a3b4c5d6e7f80910a2b3c4d5",
   "created_at": "2026-06-15T12:04:18Z"
 }
 ```
 
-### `DELETE /v1/tokens/:id`
+### `DELETE /api/v1/tokens/:id`
 
 Revoke a token. Any tunnels using it are closed immediately. Frees one slot from your active token quota.
 
 ```bash
-curl -X DELETE https://api.binboi.com/v1/tokens/tok_a91f0b3e \
+curl -X DELETE https://api.binboi.com/api/v1/tokens/tok_a91f0b3e \
   -H "Authorization: Bearer binboi_pat_..."
 ```
 
 Response `204` (no body).
 
-### `GET /v1/tunnels`
+### `GET /api/v1/tunnels`
 
 List active tunnels on your account.
 
 ```bash
-curl https://api.binboi.com/v1/tunnels \
+curl https://api.binboi.com/api/v1/tunnels \
   -H "Authorization: Bearer binboi_pat_..."
 ```
 
@@ -124,12 +124,12 @@ Response `200`:
 }
 ```
 
-### `GET /v1/tunnels/:subdomain`
+### `GET /api/v1/tunnels/:subdomain`
 
 Get detail for a single tunnel.
 
 ```bash
-curl https://api.binboi.com/v1/tunnels/my-app \
+curl https://api.binboi.com/api/v1/tunnels/my-app \
   -H "Authorization: Bearer binboi_pat_..."
 ```
 
@@ -145,23 +145,23 @@ Response `200`:
 }
 ```
 
-### `DELETE /v1/tunnels/:subdomain`
+### `DELETE /api/v1/tunnels/:subdomain`
 
 Close an active tunnel.
 
 ```bash
-curl -X DELETE https://api.binboi.com/v1/tunnels/my-app \
+curl -X DELETE https://api.binboi.com/api/v1/tunnels/my-app \
   -H "Authorization: Bearer binboi_pat_..."
 ```
 
 Response `204` (no body).
 
-### `GET /v1/requests?subdomain=<sub>`
+### `GET /api/v1/requests?subdomain=<sub>`
 
 Recent requests captured for a tunnel, within the plan's retention window.
 
 ```bash
-curl "https://api.binboi.com/v1/requests?subdomain=my-app" \
+curl "https://api.binboi.com/api/v1/requests?subdomain=my-app" \
   -H "Authorization: Bearer binboi_pat_..."
 ```
 
@@ -173,7 +173,7 @@ Response `200`:
     {
       "id": "req_182f0",
       "method": "GET",
-      "path": "/health",
+      "path": "/api/users",
       "status": 200,
       "duration_ms": 12,
       "received_at": "2026-06-15T12:02:11Z"
@@ -189,6 +189,25 @@ Response `200`:
   ]
 }
 ```
+
+### `GET /api/v1/billing/summary`
+
+Return the authenticated account's billing summary — current plan, period, and usage counters.
+
+```bash
+curl https://api.binboi.com/api/v1/billing/summary \
+  -H "Authorization: Bearer binboi_pat_..."
+```
+
+### `GET /api/v1/instance`
+
+Return public metadata about the API instance (build, region, server time).
+
+```bash
+curl https://api.binboi.com/api/v1/instance
+```
+
+> There is currently no `/health` or `/api/v1/health` endpoint — those paths return `404`. A health endpoint is planned but not yet shipped.
 
 ## Errors
 

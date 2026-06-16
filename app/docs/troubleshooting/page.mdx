@@ -30,15 +30,37 @@ export BINBOI_API_URL=https://api.binboi.com
 
 ### Tunnel fails with `dial tcp` to 127.0.0.1:8081
 
-**Cause:** `BINBOI_SERVER_ADDR` is misconfigured. The default relay is `binboi.com:8081`.
+**Cause:** `BINBOI_SERVER_ADDR` is misconfigured. The default relay is `api.binboi.com:8081`.
 
 **Fix:**
 
 ```bash
 unset BINBOI_SERVER_ADDR
 # or, to set it explicitly:
-export BINBOI_SERVER_ADDR=binboi.com:8081
+export BINBOI_SERVER_ADDR=api.binboi.com:8081
 ```
+
+> Note: `binboi.com:8081` resolves to the Vercel-hosted frontend, **not** the relay. Always use `api.binboi.com:8081`.
+
+### `binboi login` succeeds but `binboi whoami` immediately fails
+
+**Cause:** A stale `BINBOI_AUTH_TOKEN` (or `BINBOI_SERVER_ADDR`) is exported in your shell — env vars override `~/.binboi/config.json`. Common symptoms:
+
+- `binboi login` saves a fresh token, prints "Logged in as …".
+- `binboi whoami` returns `invalid or expired token`.
+- `binboi http` connects to the wrong relay or fails the handshake.
+
+**Fix:**
+
+```bash
+# Clear the current shell.
+unset BINBOI_AUTH_TOKEN BINBOI_TOKEN BINBOI_SERVER_ADDR BINBOI_API_URL
+
+# Find and remove stale exports from shell startup files.
+grep "BINBOI_" ~/.zshrc ~/.zshenv ~/.zprofile ~/.bashrc ~/.bash_profile 2>/dev/null
+```
+
+Restart the shell after editing dotfiles so the unset takes effect everywhere.
 
 ## Auth
 
@@ -60,7 +82,7 @@ binboi login --token binboi_pat_<new>
 **Fix:** Revoke an unused token from the dashboard, or upgrade your plan.
 
 ```bash
-curl -X DELETE https://api.binboi.com/v1/tokens/<token_id> \
+curl -X DELETE https://api.binboi.com/api/v1/tokens/<token_id> \
   -H "Authorization: Bearer binboi_pat_..."
 ```
 
@@ -75,7 +97,7 @@ curl -X DELETE https://api.binboi.com/v1/tokens/<token_id> \
 ```bash
 binboi tunnels
 # pick one and close it
-curl -X DELETE https://api.binboi.com/v1/tunnels/<subdomain> \
+curl -X DELETE https://api.binboi.com/api/v1/tunnels/<subdomain> \
   -H "Authorization: Bearer binboi_pat_..."
 ```
 
@@ -100,6 +122,20 @@ binboi http 3000
 ```
 
 ## Account
+
+### Tunnel handshake fails with "access token has been revoked" — but the token is fresh
+
+**Cause:** The tunnel reject path returns a generic "revoked" error regardless of the actual reason. The most common non-obvious cause is an account flipped to `is_active = false` (typically by the Polar cancellation webhook), not a real token revocation.
+
+**Fix (hosted):** Email [contact@miransas.com](mailto:contact@miransas.com) with your account email. Support can reactivate the account.
+
+**Fix (self-hosted):** Set the user back to active in the database:
+
+```sql
+UPDATE "user" SET is_active = true WHERE email = '<your-email>';
+```
+
+A backend fix to distinguish revoked-token, revoked-account, and unknown-user errors is planned.
 
 ### Email verification not arriving
 

@@ -10,7 +10,7 @@ Sign up at [binboi.com](https://binboi.com) and verify your email. The verificat
 
 Open [binboi.com/dashboard/access-tokens](https://binboi.com/dashboard/access-tokens) and click **Generate Token**. The token is shown once in a modal with a **Copy** button — copy it now and store it somewhere safe (a password manager is fine). It cannot be retrieved later.
 
-Token format: `binboi_pat_<8 hex>_<32 hex>`
+Token format: `binboi_pat_<8 hex>_<36 hex>` (56 chars total).
 The Free plan allows up to 2 active tokens. If you hit the cap, revoke an existing token or upgrade.
 
 ## 3. Install the CLI
@@ -30,7 +30,7 @@ While public distribution is being prepared, contact [contact@miransas.com](mail
 ## 4. Log in and open a tunnel
 
 ```bash
-binboi login --token binboi_pat_xxxxxxxx_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+binboi login --token binboi_pat_xxxxxxxx_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 binboi http 3000
 ```
 
@@ -38,10 +38,10 @@ Your local service on port `3000` is now reachable at a randomly assigned URL �
 
 Forwarding  https://wispy-otter-7421.binboi.com → http://localhost:3000
 
-Pro and Max users can request a specific subdomain:
+Pro and Max users can request a specific subdomain by passing it positionally:
 
 ```bash
-binboi http 3000 --subdomain my-app
+binboi http 3000 my-app
 ```
 
 Press `Ctrl+C` to stop the tunnel.
