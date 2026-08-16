@@ -28,7 +28,7 @@
     "react-icon": "^1.0.0",
     "react-icons": "^5.7.0",
     "rehype-pretty-code": "^0.14.5",
-    "resend": "^6.18.1",
+    "resend": "^6.19.0",
     "shadcn": "^4.17.0",
     "shiki": "^4.4.3",
     "tailwind-merge": "^3.6.0",
